@@ -1,0 +1,11 @@
+{
+  "files": ["blenderfarm/**/*.py", "setup.py"],
+  "readme": "README.md",
+  "name": "Blenderfarm",
+  "output": "docs",
+  "version": "0.1.0",
+  "links": {
+    "github": "https://github.com/zlsa/blenderfarm/"
+  },
+  "owners": "ZLSA Design"
+}
