@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Blenderfarm</title>
+    <link rel="stylesheet" href=".//public/style.css" />
+    <link rel="icon" type="image/png" href=".//public/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src=".//public/jquery.min.js"></script>
+    <script src=".//public/script.js"></script>
+  </head>
+  <body class="index markdown">
+    
+    <main id="sections">
+
+      <!-- The header -->
+
+      <section class="section header files-hidden markdown" id="header">
+        
+
+        <aside class="comment">
+
+          <header>
+
+            <div class="file-path">
+              
+              <span id="project-overview"><span class="name">Blenderfarm</span><span id="version">0.1.0</span></span>
+              
+              
+              <div class="files-menu">
+                <span id="filename" title="Blenderfarm">Blenderfarm</span>
+                
+                <ul class="files index">
+              
+                  
+                  
+<li class="file">
+  
+<a href="setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="blenderfarm/client.py" title="blenderfarm/client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="blenderfarm/job.py" title="blenderfarm/job.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/job.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="blenderfarm/node.py" title="blenderfarm/node.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/node.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="blenderfarm/serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="blenderfarm/server.py" title="blenderfarm/server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="blenderfarm/task.py" title="blenderfarm/task.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/task.py</span>
+
+</a>
+
+</li>
+
+                  
+                </ul>
+                
+              </div>
+                
+            </div>
+
+            <div class="spacer"></div>
+            
+            <ul class="links">
+
+              <li class="link">
+  <a href="https://github.com/zlsa/blenderfarm/" title="View on GitHub" class="github">GitHub</a>
+</li>
+
+              
+            </ul>
+            
+          </header>
+            
+        </aside>
+
+        <div class="code">
+          <div class="markdown"><h1 id="blenderfarm">Blenderfarm</h1><p>Distributed Blender renderfarm software. There are no &quot;official&quot;
+servers; you must host your own server and render nodes.</p>
+<h1 id="important-notes">Important notes</h1><p>This is alpha software, and backwards compatibility is <em>not</em> expected
+at this point. Do not use this in any production system (obviously).</p>
+<h1 id="terminology">Terminology</h1><h4 id="server">Server</h4><p>The Blenderfarm server. This does no real work other than accept new
+<code>Job</code>s from clients and divvy them up into <code>Task</code>s to send to render
+nodes.</p>
+<h4 id="client">Client</h4><p>Something that connects to the <code>server</code>. It might upload new <code>job</code>s;
+it might perform <code>task</code>s; or it might do both.</p>
+<h4 id="node">Node</h4><p>Performs the actual work, one <code>task</code> at a time.</p>
+<h4 id="job">Job</h4><p>A single &quot;thing&quot;, such as a single still image or an animation. The
+server will attempt to break a single <code>job</code> into multiple <code>task</code>s;
+for example, an animation can be rendered by multiple clients, one for
+each frame.</p>
+<h4 id="task">Task</h4><p>A single, atomic operation. Clients are given one task at a time,
+along with all the necessary data (such as <code>.blend</code> files); they
+execute the task, then upload the finished data to the server.</p>
+<h2 id="example">Example</h2><p>A user uploads a new <code>.blend</code> file, a 30-frame animation, using
+<code>blenderfarm-web-server</code>. The server sees that it&#39;s an animation and
+creates 30 tasks. As soon as a client implementing <code>node</code> requests a
+new task, the server sends a frame render task, along with all the
+necessary data. Each render node then renders its own frame, then
+uploads the resulting frame to the server. When all the tasks are
+complete, the job is marked as complete and the client is notified.</p>
+</div>
+        </div>
+        
+
+      </section>
+
+      <!-- The main code section -->
+      
+      <section class="section footer" id="footer">
+        
+        <aside class="comment">
+          <span class="content project-copyright">&copy; Copyright 2017 ZLSA Design.</span>
+        </aside>
+
+        <div class="code">
+          <span class="content page-generation-time">Generated Sat, 08 Apr 2017 20:01:08 GMT</span>
+        </div>
+        
+      </section>
+      
+    </main>
+
+  </body>
+</html>
+

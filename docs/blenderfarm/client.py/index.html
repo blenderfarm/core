@@ -1,0 +1,507 @@
+<!doctype html>
+<html>
+  <head>
+    <title>blenderfarm/client.py</title>
+    <link rel="stylesheet" href="./../../public/style.css" />
+    <link rel="icon" type="image/png" href="./../../public/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./../../public/jquery.min.js"></script>
+    <script src="./../../public/script.js"></script>
+  </head>
+  <body class="code">
+    
+    <main id="sections">
+
+      <!-- The header -->
+
+        
+      <section class="section header files-hidden" id="header">
+
+        <aside class="comment">
+
+          <header>
+
+            <div class="file-path">
+              
+              
+              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm<span id="version">0.1.0</span></a>
+              
+              <div class="files-menu">
+                <span id="filename" title="blenderfarm/client.py">blenderfarm/client.py</span>
+                
+              
+                <ul class="files hidable">
+                  
+                  
+<li class="file">
+  
+<a href="../../setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../job.py" title="blenderfarm/job.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/job.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../node.py" title="blenderfarm/node.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/node.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../server.py" title="blenderfarm/server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../task.py" title="blenderfarm/task.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/task.py</span>
+
+</a>
+
+</li>
+
+                  
+                </ul>
+                
+              </div>
+                
+            </div>
+
+            <div class="spacer"></div>
+            
+            
+          </header>
+            
+        </aside>
+
+        
+        <div class="code empty">
+        </div>
+
+      </section>
+
+      <!-- The main code section -->
+      
+      <section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Blenderfarm client.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> urljoin</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Used for interfacing with the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">import</span> requests
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>The main client class. It handles communicating with the server,
+rendering the actual frames, and reporting progress back to the
+server. It may optionally implement <code>Node</code>.</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>pylint: disable=too-many-instance-attributes,too-many-arguments</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, hostname=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">44363</span>, username=<span class="hljs-string">'anon'</span>, key=<span class="hljs-string">'1234'</span>, insecure=False, is_node=False)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Server information.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.hostname = hostname
+        self.port = port</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Credentials.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.username = username
+        self.key = key</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If <code>True</code>, use <code>http</code> instead of <code>https</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.insecure = insecure</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Are we a node?</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.is_node = is_node</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="dynamic-state">Dynamic state</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.connected = <span class="hljs-keyword">False</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>The task we are currently performing. Only applicable if <code>is_node</code> is True.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.task = <span class="hljs-keyword">None</span>
+
+        self.session = requests.Session()</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>State utility functions.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_connected</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns true if we have connected to the server. Because of
+networking, we might not necessarily be able to connect, but we&#39;ve
+successfully authenticated already at some point.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.connected
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_performing_task</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns <code>True</code> if we are currently performing a task.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.task != <span class="hljs-keyword">None</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Getters.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_task</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.task</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Server connection utility functions.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_hostname_port</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns a pretty <code>hostname:port</code> string.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.get_url()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_url</span><span class="hljs-params">(self, path=<span class="hljs-string">''</span>)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Builds a base URL for the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        scheme = <span class="hljs-string">'https'</span>
+
+        <span class="hljs-keyword">if</span> self.insecure:
+            scheme = <span class="hljs-string">'http'</span>
+
+        <span class="hljs-keyword">return</span> urljoin(scheme + <span class="hljs-string">'://'</span> + self.hostname + <span class="hljs-string">':'</span> + str(self.port), path)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="server-connection">Server connection</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connect</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Attempts to connect to the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">try</span>:
+            response = self.session.get(self.get_url(<span class="hljs-string">'/version'</span>))
+        <span class="hljs-keyword">except</span> requests.exceptions.ConnectionError <span class="hljs-keyword">as</span> _:
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+        print(response.status_code)
+
+        self.connected = <span class="hljs-keyword">True</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">disconnect</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Disconnects from the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.connected = <span class="hljs-keyword">False</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="lifecycle">Lifecycle</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">idle</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Called whenever the client is idle.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">request_new_task</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Requests the next task from the server, and if it exists, performs it.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">pass</span></code></pre>
+  </div>
+
+  
+</section>
+
+      
+      
+      <section class="section footer" id="footer">
+        
+        <aside class="comment">
+          <span class="content project-copyright">&copy; Copyright 2017 ZLSA Design.</span>
+        </aside>
+
+        <div class="code">
+          <span class="content page-generation-time">Generated Sat, 08 Apr 2017 20:01:08 GMT</span>
+        </div>
+        
+      </section>
+      
+    </main>
+
+  </body>
+</html>
+

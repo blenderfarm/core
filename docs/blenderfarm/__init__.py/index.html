@@ -1,0 +1,910 @@
+<!doctype html>
+<html>
+  <head>
+    <title>blenderfarm/__init__.py</title>
+    <link rel="stylesheet" href="./../../public/style.css" />
+    <link rel="icon" type="image/png" href="./../../public/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./../../public/jquery.min.js"></script>
+    <script src="./../../public/script.js"></script>
+  </head>
+  <body class="code">
+    
+    <main id="sections">
+
+      <!-- The header -->
+
+        
+      <section class="section header files-hidden" id="header">
+
+        <aside class="comment">
+
+          <header>
+
+            <div class="file-path">
+              
+              
+              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm<span id="version">0.1.0</span></a>
+              
+              <div class="files-menu">
+                <span id="filename" title="blenderfarm/__init__.py">blenderfarm/__init__.py</span>
+                
+              
+                <ul class="files hidable">
+                  
+                  
+<li class="file">
+  
+<a href="../../setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../client.py" title="blenderfarm/client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../job.py" title="blenderfarm/job.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/job.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../node.py" title="blenderfarm/node.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/node.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../server.py" title="blenderfarm/server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../task.py" title="blenderfarm/task.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/task.py</span>
+
+</a>
+
+</li>
+
+                  
+                </ul>
+                
+              </div>
+                
+            </div>
+
+            <div class="spacer"></div>
+            
+            
+          </header>
+            
+        </aside>
+
+        
+        <div class="code empty">
+        </div>
+
+      </section>
+
+      <!-- The main code section -->
+      
+      <section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Blenderfarm addon for Blender 2.78 and up.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">import</span> bpy <span class="hljs-comment"># pylint: disable=import-error</span>
+
+<span class="hljs-keyword">from</span> blenderfarm <span class="hljs-keyword">import</span> client
+<span class="hljs-keyword">from</span> blenderfarm <span class="hljs-keyword">import</span> task
+
+bl_info = { <span class="hljs-comment"># pylint: disable=invalid-name</span>
+    <span class="hljs-string">'name'</span>: <span class="hljs-string">'Blenderfarm client'</span>,
+    <span class="hljs-string">'description'</span>: <span class="hljs-string">'Blenderfarm client addon'</span>,
+    <span class="hljs-string">'author'</span>: <span class="hljs-string">'Jon Ross'</span>,</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>This should stay up-to-date with the Blenderfarm version.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-string">'version'</span>: (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>),
+    <span class="hljs-string">'blender'</span>: (<span class="hljs-number">2</span>, <span class="hljs-number">78</span>, <span class="hljs-number">0</span>),
+    <span class="hljs-comment">#'location': 'View3D &gt; Add &gt; Mesh',</span>
+    <span class="hljs-comment">#'warning': '',</span>
+    <span class="hljs-comment">#'wiki_url': 'http://wiki.blender.org/index.php/Extensions:2.6/Py/'</span>
+    <span class="hljs-string">'tracker_url'</span>: <span class="hljs-string">'https://developer.blender.org/maniphest/task/edit/form/2/'</span>,
+    <span class="hljs-string">'support'</span>: <span class="hljs-string">'COMMUNITY'</span>,
+    <span class="hljs-string">'category'</span>: <span class="hljs-string">'Render'</span>
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmAddonPreferences</span><span class="hljs-params">(bpy.types.AddonPreferences)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Addon preferences (persistent across all of Blender.)</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>bl_idname</code> MUST be the name of the package, so we use
+<code>__package__</code> here (if this were a module, i.e. a single file
+instead of a directory, we&#39;d use <code>__name__</code> instead.)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    bl_idname = __package__</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Blenderfarm server information (hostname/port)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    server_hostname = bpy.props.StringProperty(
+        name=<span class="hljs-string">'Hostname'</span>,
+        default=<span class="hljs-string">'localhost'</span>
+    )
+
+    server_port = bpy.props.IntProperty(
+        name=<span class="hljs-string">'Port'</span>,
+        default=<span class="hljs-number">44363</span>
+    )</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Blenderfarm user credentials (username/key)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    credentials_username = bpy.props.StringProperty(
+        name=<span class="hljs-string">'Username'</span>,
+        default=<span class="hljs-string">'anon'</span>
+    )
+
+    credentials_key = bpy.props.StringProperty(
+        name=<span class="hljs-string">'Key'</span>,
+        description=<span class="hljs-string">'Authentication key for this user.'</span>
+                    <span class="hljs-string">'Request a key from the Blenderfarm server administrator.'</span>,
+        default=<span class="hljs-string">'1234'</span>
+    )</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Client ID</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    client_id = bpy.props.StringProperty(
+        name=<span class="hljs-string">'Client ID'</span>,
+        description=<span class="hljs-string">'The ID of this client.'</span>,
+        default=<span class="hljs-string">''</span>
+    )
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get</span><span class="hljs-params">(context)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns the global instance of the <code>BlenderfarmAddonPreferences</code> class.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        user_preferences = context.user_preferences
+        <span class="hljs-keyword">return</span> user_preferences.addons[__package__].preferences
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_client</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns our client instance. Guaranteed to return a <code>Client</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-string">'client'</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> locals():
+            self.build_client()
+
+        <span class="hljs-keyword">return</span> self.client
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_client</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Creates a new client; if one already exists, end it cleanly.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-string">'client'</span> <span class="hljs-keyword">in</span> locals():
+            self.client.disconnect()
+            
+        self.client = client.Client(self.server_hostname, self.server_port,
+                                    self.credentials_username, self.credentials_key)
+
+        <span class="hljs-keyword">return</span> self.client
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_hostname_port</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns the user-facing <code>hostname:port</code> string.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.server_hostname + <span class="hljs-string">':'</span> + str(self.server_port)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw</span><span class="hljs-params">(self, context)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Draw the preferences panel (this is in Blender&#39;s user preferences and the addon info box must be expanded for this to be visible.)</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Disable pylint warning.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = context
+
+        layout = self.layout</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Create a 50/50 horizontal split for <code>[ server info | user credentials ]</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        main_split = layout.split(percentage=<span class="hljs-number">0.5</span>)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Left column; server info (hostname/port).</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        server_info = main_split.column(align=<span class="hljs-keyword">True</span>)
+
+        server_info.label(text=<span class="hljs-string">'Server'</span>)
+
+        server_info.prop(self, <span class="hljs-string">'server_hostname'</span>, text=<span class="hljs-string">''</span>)
+        server_info.prop(self, <span class="hljs-string">'server_port'</span>)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Right column; user credentials (username/key).</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        credentials = main_split.column(align=<span class="hljs-keyword">True</span>)
+
+        credentials.label(text=<span class="hljs-string">'Credentials'</span>)
+
+        credentials.prop(self, <span class="hljs-string">'credentials_username'</span>, text=<span class="hljs-string">'Username'</span>)
+        credentials.prop(self, <span class="hljs-string">'credentials_key'</span>, text=<span class="hljs-string">'Key'</span>)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Left column (below server info): connection info</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        connection_status = server_info.box().column(align=<span class="hljs-keyword">True</span>)
+
+        connection_status.label(text=<span class="hljs-string">'Connected: '</span> + <span class="hljs-string">'FALSE'</span>)
+        
+        layout.operator(<span class="hljs-string">'wm.save_userpref'</span>)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h1 id="operators">Operators</h1></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmConnect</span><span class="hljs-params">(bpy.types.Operator)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Connects to the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    bl_idname = <span class="hljs-string">'blenderfarm.connect'</span>
+    bl_label = <span class="hljs-string">'Connect to server'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">execute</span><span class="hljs-params">(self, context)</span>:</span> <span class="hljs-comment"># pylint: disable=missing-docstring,no-self-use</span>
+        client = BlenderfarmAddonPreferences.get(context).get_client()
+        client.connect()
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> client.is_connected():
+            self.report({<span class="hljs-string">'ERROR'</span>}, <span class="hljs-string">'Could not connect to '</span> + client.get_hostname_port())
+        
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">'FINISHED'</span>}
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmDisconnect</span><span class="hljs-params">(bpy.types.Operator)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Disconnects from the Blenderfarm server. Does not cancel currently-running tasks, if present.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    bl_idname = <span class="hljs-string">'blenderfarm.disconnect'</span>
+    bl_label = <span class="hljs-string">'Disconnect from server'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">execute</span><span class="hljs-params">(self, context)</span>:</span> <span class="hljs-comment"># pylint: disable=missing-docstring,no-self-use</span>
+        client = BlenderfarmAddonPreferences.get(context).get_client()
+        client.disconnect()
+        
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">'FINISHED'</span>}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmNodeTaskCancel</span><span class="hljs-params">(bpy.types.Operator)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Cancels all current tasks and calls the <code>blenderfarm.disconnect</code>
+operator to prevent new tasks from being connected.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    bl_idname = <span class="hljs-string">'blenderfarm.node_task_cancel'</span>
+    bl_label = <span class="hljs-string">'Cancel in-progress tasks'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">execute</span><span class="hljs-params">(self, context)</span>:</span> <span class="hljs-comment"># pylint: disable=missing-docstring,no-self-use,unused-argument</span>
+        bpy.ops.blenderfarm.disconnect()
+
+        bpy.ops.wm.read_homefile()
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">'FINISHED'</span>}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmNodeTaskPerform</span><span class="hljs-params">(bpy.types.Operator)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Requests a new task from the server and begins executing it.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    bl_idname = <span class="hljs-string">'blenderfarm.node_task_perform'</span>
+    bl_label = <span class="hljs-string">'Fetch and perform task'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">execute</span><span class="hljs-params">(self, context)</span>:</span> <span class="hljs-comment"># pylint: disable=missing-docstring,no-self-use,unused-argument</span>
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">'FINISHED'</span>}</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h1 id="properties">Properties</h1></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmControlPanel</span><span class="hljs-params">(bpy.types.Panel)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Draws the UI in the properties panel (Properties/Render).</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    bl_label = <span class="hljs-string">'Blenderfarm Control'</span>
+    bl_space_type = <span class="hljs-string">'PROPERTIES'</span>
+    bl_region_type = <span class="hljs-string">'WINDOW'</span>
+    bl_options = {<span class="hljs-string">'DEFAULT_CLOSED'</span>}
+    bl_context = <span class="hljs-string">'render'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw</span><span class="hljs-params">(self, context)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Draws the panel in the render view.</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Get the global instance of the preferences object. This is
+where server/credentials are stored.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        prefs = BlenderfarmAddonPreferences.get(context)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Get the Blenderfarm client.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        client = prefs.get_client()</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>I don&#39;t want to type <code>self.layout</code> every time.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        layout = self.layout</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Top row of the panel (contains the control buttons)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        control_row = layout.row(align=<span class="hljs-keyword">False</span>)
+        control_row.alignment = <span class="hljs-string">'EXPAND'</span>
+
+        control_row.scale_y = <span class="hljs-number">2</span>
+
+        <span class="hljs-keyword">if</span> client.is_connected():
+            control_row.operator(<span class="hljs-string">'blenderfarm.disconnect'</span>, <span class="hljs-string">'Disconnect'</span>)
+        <span class="hljs-keyword">else</span>:
+            control_row.operator(<span class="hljs-string">'blenderfarm.connect'</span>, <span class="hljs-string">'Connect'</span>)
+
+        buttons = control_row.column(align=<span class="hljs-keyword">True</span>)
+
+        <span class="hljs-keyword">if</span> client.is_performing_task():
+            buttons.operator(<span class="hljs-string">'blenderfarm.node_task_cancel'</span>, <span class="hljs-string">'Cancel'</span>, icon=<span class="hljs-string">'CANCEL'</span>)
+        <span class="hljs-keyword">else</span>:
+            buttons.operator(<span class="hljs-string">'blenderfarm.node_task_perform'</span>, <span class="hljs-string">'Run Task'</span>, icon=<span class="hljs-string">'PLAY'</span>)
+            
+        <span class="hljs-comment">#buttons.prop(prefs,, 'Perform Task', icon='CANCEL')</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Status box. Contains connection settings (duplicating addon
+preferences, yes I know.)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        status_box = layout.box()
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_new_table_row</span><span class="hljs-params">(table, percentage=<span class="hljs-number">0.3</span>)</span>:</span>
+            <span class="hljs-keyword">return</span> table.split(percentage=percentage)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Server name row</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        server_row = get_new_table_row(status_box)
+
+        server_row.label(<span class="hljs-string">'Connected:'</span>)
+        server_row.label(str(client.is_connected()))
+
+            
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmSettingsPanel</span><span class="hljs-params">(bpy.types.Panel)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Draws the &quot;Blenderfarm Settings&quot; UI in the properties panel (Properties/Render).</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    bl_label = <span class="hljs-string">'Blenderfarm Settings'</span>
+    bl_space_type = <span class="hljs-string">'PROPERTIES'</span>
+    bl_region_type = <span class="hljs-string">'WINDOW'</span>
+    bl_options = {<span class="hljs-string">'DEFAULT_CLOSED'</span>}
+    bl_context = <span class="hljs-string">'render'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">draw</span><span class="hljs-params">(self, context)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Draws the panel in the render view.</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Get the global instance of the preferences object. This is
+where server/credentials are stored.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        prefs = BlenderfarmAddonPreferences.get(context)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>I don&#39;t want to type <code>self.layout</code> every time.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        layout = self.layout</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Status box. Contains connection settings (duplicating addon
+preferences, yes I know.)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        status_box = layout.box()
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_new_table_row</span><span class="hljs-params">(table, percentage=<span class="hljs-number">0.3</span>)</span>:</span>
+            <span class="hljs-keyword">return</span> table.split(percentage=percentage)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Server name row</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        server_row = get_new_table_row(status_box)
+
+        server_row.label(<span class="hljs-string">'Server:'</span>)
+        server_row.label(prefs.get_hostname_port())
+
+classes_to_register = [
+    BlenderfarmConnect,
+    BlenderfarmDisconnect,
+    
+    BlenderfarmNodeTaskCancel,
+    BlenderfarmNodeTaskPerform,
+
+    BlenderfarmControlPanel,
+    BlenderfarmSettingsPanel,
+
+    BlenderfarmAddonPreferences
+]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register</span><span class="hljs-params">()</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Registers the Blenderfarm addon.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> classes_to_register:
+        bpy.utils.register_class(c)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unregister</span><span class="hljs-params">()</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Unregisters the Blenderfarm Node addon.</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>First, cancel any operations.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-comment">#bpy.ops.blenderfarm_node.cancel()</span>
+    
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> classes_to_register:
+        bpy.utils.unregister_class(c)</code></pre>
+  </div>
+
+  
+</section>
+
+      
+      
+      <section class="section footer" id="footer">
+        
+        <aside class="comment">
+          <span class="content project-copyright">&copy; Copyright 2017 ZLSA Design.</span>
+        </aside>
+
+        <div class="code">
+          <span class="content page-generation-time">Generated Sat, 08 Apr 2017 17:53:21 GMT</span>
+        </div>
+        
+      </section>
+      
+    </main>
+
+  </body>
+</html>
+

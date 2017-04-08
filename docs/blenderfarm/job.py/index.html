@@ -1,0 +1,320 @@
+<!doctype html>
+<html>
+  <head>
+    <title>blenderfarm/job.py</title>
+    <link rel="stylesheet" href="./../../public/style.css" />
+    <link rel="icon" type="image/png" href="./../../public/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./../../public/jquery.min.js"></script>
+    <script src="./../../public/script.js"></script>
+  </head>
+  <body class="code">
+    
+    <main id="sections">
+
+      <!-- The header -->
+
+        
+      <section class="section header files-hidden" id="header">
+
+        <aside class="comment">
+
+          <header>
+
+            <div class="file-path">
+              
+              
+              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm<span id="version">0.1.0</span></a>
+              
+              <div class="files-menu">
+                <span id="filename" title="blenderfarm/job.py">blenderfarm/job.py</span>
+                
+              
+                <ul class="files hidable">
+                  
+                  
+<li class="file">
+  
+<a href="../../setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../client.py" title="blenderfarm/client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../node.py" title="blenderfarm/node.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/node.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../server.py" title="blenderfarm/server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../task.py" title="blenderfarm/task.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/task.py</span>
+
+</a>
+
+</li>
+
+                  
+                </ul>
+                
+              </div>
+                
+            </div>
+
+            <div class="spacer"></div>
+            
+            
+          </header>
+            
+        </aside>
+
+        
+        <div class="code empty">
+        </div>
+
+      </section>
+
+      <!-- The main code section -->
+      
+      <section class="section">
+
+  
+  <aside class="comment empty">
+    <div class="text markdown"></div>
+  </aside>
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> serializable
+<span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> task
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Job</span><span class="hljs-params">(serializable.Serializable)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Describes a single job and remembers the status of each task within.</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="statuses">Statuses</h2></div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>No tasks have been created for this job yet.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    STATUS_PENDING = <span class="hljs-string">'pending'</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>At least one task has been sent off for completion.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    STATUS_WORKING = <span class="hljs-string">'working'</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Every task associated with this job has been fulfilled.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    STATUS_COMPLETE = <span class="hljs-string">'complete'</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>One or more tasks on this job have failed.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    STATUS_FAILED = <span class="hljs-string">'failed'</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Currently in-progress tasks are saved, but further tasks are not
+created.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    STATUS_PAUSED = <span class="hljs-string">'paused'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        self.status = Job.STATUS_PENDING</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Contains a list of <code>Task</code>s.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.tasks = []</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Contains a list of <code>task_id</code>s.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.working_tasks = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unserialize</span><span class="hljs-params">(self, data)</span>:</span>
+        super().unserialize(data)
+
+        self.tasks = []
+
+        <span class="hljs-keyword">for</span> task_serialized <span class="hljs-keyword">in</span> data[<span class="hljs-string">'tasks'</span>]:
+            self.tasks.append(task.Task(self).unserialize(task_serialized))
+
+        <span class="hljs-keyword">return</span> self
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serialize</span><span class="hljs-params">(self)</span>:</span>
+        out = super().serialize()
+
+        out[<span class="hljs-string">'tasks'</span>] = []
+
+        <span class="hljs-keyword">for</span> task_object <span class="hljs-keyword">in</span> self.tasks:
+            out[<span class="hljs-string">'tasks'</span>].tasks.append(task_object.serialize())
+
+        <span class="hljs-keyword">return</span> out</code></pre>
+  </div>
+
+  
+</section>
+
+      
+      
+      <section class="section footer" id="footer">
+        
+        <aside class="comment">
+          <span class="content project-copyright">&copy; Copyright 2017 ZLSA Design.</span>
+        </aside>
+
+        <div class="code">
+          <span class="content page-generation-time">Generated Sat, 08 Apr 2017 20:01:08 GMT</span>
+        </div>
+        
+      </section>
+      
+    </main>
+
+  </body>
+</html>
+
