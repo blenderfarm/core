@@ -1,0 +1,381 @@
+<!doctype html>
+<html>
+  <head>
+    <title>blenderfarm/api/v1.py</title>
+    <link rel="stylesheet" href="./../../../public/style.css" />
+    <link rel="icon" type="image/png" href="./../../../public/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./../../../public/jquery.min.js"></script>
+    <script src="./../../../public/script.js"></script>
+  </head>
+  <body class="code">
+    
+    <main id="sections">
+
+      <!-- The header -->
+
+        
+      <section class="section header files-hidden" id="header">
+
+        <aside class="comment">
+
+          <header>
+
+            <div class="file-path">
+              
+              
+              <a id="project-overview" href="./../../.." title="Project Overview">Blenderfarm Core<span id="version">0.1.0</span></a>
+              
+              <div class="files-menu">
+                <span id="filename" title="blenderfarm/api/v1.py">blenderfarm/api/v1.py</span>
+                
+              
+                <ul class="files hidable">
+                  
+                  
+<li class="file">
+  
+<a href="../../../API.md" title="API.md">
+    
+<span class="language" style="background-color: transparent">MD</span>
+
+
+<span class="filename">API.md</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../../client.py" title="client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../../server.py" title="server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../../setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../../build-documentation.sh" title="build-documentation.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">build-documentation.sh</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../../run-pylint.sh" title="run-pylint.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">run-pylint.sh</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../../__init__.py" title="blenderfarm/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../client.py" title="blenderfarm/client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../job.py" title="blenderfarm/job.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/job.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../node.py" title="blenderfarm/node.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/node.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../server.py" title="blenderfarm/server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../task.py" title="blenderfarm/task.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/task.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../version.py" title="blenderfarm/version.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/version.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../__init__.py" title="blenderfarm/api/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../api.py" title="blenderfarm/api/api.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/api.py</span>
+
+</a>
+
+</li>
+
+                  
+                </ul>
+                
+              </div>
+                
+            </div>
+
+            <div class="spacer"></div>
+            
+            
+          </header>
+            
+        </aside>
+
+        
+        <div class="code empty">
+        </div>
+
+      </section>
+
+      <!-- The main code section -->
+      
+      <section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>API v1.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">from</span> .. <span class="hljs-keyword">import</span> version
+<span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> api
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">API</span><span class="hljs-params">(api.API)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Same name as <code>api.API</code>, but this is the v1 API implementation.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, server)</span>:</span>
+        super().__init__(server)
+        
+        self.api_version = <span class="hljs-string">'1'</span>
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_routes</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Initialize routes.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.route(<span class="hljs-string">'__error_404'</span>, self.route_error_404)
+        self.route(<span class="hljs-string">'info.json'</span>, self.route_info)
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_error_404</span><span class="hljs-params">(request, response)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>404 error route.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = request
+        
+        response.respond_json({
+            <span class="hljs-string">'status'</span>: <span class="hljs-string">'error'</span>,
+            <span class="hljs-string">'code'</span>: <span class="hljs-string">'404'</span>,
+            <span class="hljs-string">'message'</span>: <span class="hljs-string">'404 Not Found'</span>
+        }, status=<span class="hljs-number">404</span>)
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_info</span><span class="hljs-params">(request, response)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>info.json</code> route</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = request
+        
+        response.respond_json({
+            <span class="hljs-string">'status'</span>: <span class="hljs-string">'ok'</span>,
+            <span class="hljs-string">'version'</span>: version.__version__
+        })</code></pre>
+  </div>
+
+  
+</section>
+
+      
+      
+      <section class="section footer" id="footer">
+        
+        <aside class="comment">
+          <span class="content project-copyright">&copy; Copyright 2017 ZLSA Design.</span>
+        </aside>
+
+        <div class="code">
+          <span class="content page-generation-time">Generated Tue, 11 Apr 2017 19:29:03 GMT</span>
+        </div>
+        
+      </section>
+      
+    </main>
+
+  </body>
+</html>
+

@@ -1,4 +1,6 @@
 
+"""Task."""
+
 from . import serializable
 
 class Task(serializable.Serializable):

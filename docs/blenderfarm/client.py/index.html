@@ -24,7 +24,7 @@
             <div class="file-path">
               
               
-              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm<span id="version">0.1.0</span></a>
+              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm Core<span id="version">0.1.0</span></a>
               
               <div class="files-menu">
                 <span id="filename" title="blenderfarm/client.py">blenderfarm/client.py</span>
@@ -33,6 +33,45 @@
                 <ul class="files hidable">
                   
                   
+<li class="file">
+  
+<a href="../../API.md" title="API.md">
+    
+<span class="language" style="background-color: transparent">MD</span>
+
+
+<span class="filename">API.md</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../client.py" title="client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../server.py" title="server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">server.py</span>
+
+</a>
+
+</li>
+  
 <li class="file">
   
 <a href="../../setup.py" title="setup.py">
@@ -45,8 +84,47 @@
 </a>
 
 </li>
+  
+<li class="file">
+  
+<a href="../../build-documentation.sh" title="build-documentation.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">build-documentation.sh</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../run-pylint.sh" title="run-pylint.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">run-pylint.sh</span>
+
+</a>
+
+</li>
 <li class="file separator">
   
+  
+<a href="../__init__.py" title="blenderfarm/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
   
 <a href="../job.py" title="blenderfarm/job.py">
     
@@ -110,6 +188,58 @@
 </a>
 
 </li>
+  
+<li class="file">
+  
+<a href="../version.py" title="blenderfarm/version.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/version.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../api/__init__.py" title="blenderfarm/api/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../api/api.py" title="blenderfarm/api/api.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/api.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../api/v1.py" title="blenderfarm/api/v1.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/v1.py</span>
+
+</a>
+
+</li>
 
                   
                 </ul>
@@ -142,7 +272,8 @@
   
 
   <div class="code">
-    <pre><code><span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> urljoin</code></pre>
+    <pre><code><span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> urljoin
+<span class="hljs-keyword">import</span> json</code></pre>
   </div>
 
   
@@ -150,15 +281,80 @@
 <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>Used for interfacing with the server.</p>
+    <div class="text markdown"><p>Used for interfacing with the server. This is built into Blender so
+there aren&#39;t any problems when this is used as an addon.</p>
 </div>
   </aside>
   
 
   <div class="code">
-    <pre><code><span class="hljs-keyword">import</span> requests
+    <pre><code><span class="hljs-keyword">import</span> requests</code></pre>
+  </div>
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span>:</span></code></pre>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h1 id="error"><code>Error</code></h1></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Error</span><span class="hljs-params">(Exception)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Contains a server error response (see <a href="../../API.md/" title="">API.md</a>)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, code, message, context=None)</span>:</span>
+        super().__init__(message)
+        
+        self.code = code
+        self.message = message
+        self.context = context
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>pylint: disable=no-else-return</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> self.context:
+            <span class="hljs-keyword">return</span> self.message + <span class="hljs-string">': "'</span> + self.context + <span class="hljs-string">'"'</span>
+        <span class="hljs-keyword">elif</span> self.message:
+            <span class="hljs-keyword">return</span> self.message
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> self.code</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h1 id="client"><code>Client</code></h1></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span>:</span></code></pre>
   </div>
 
   
@@ -173,22 +369,10 @@ server. It may optionally implement <code>Node</code>.</p>
   </aside>
   
 
-
-  <div class="code empty">
-    <pre><code></code></pre>
-  </div>
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>pylint: disable=too-many-instance-attributes,too-many-arguments</p>
-</div>
-  </aside>
-  
-
   <div class="code">
-    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, hostname=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">44363</span>, username=<span class="hljs-string">'anon'</span>, key=<span class="hljs-string">'1234'</span>, insecure=False, is_node=False)</span>:</span></code></pre>
+    <pre><code>    <span class="hljs-comment">## pylint: disable=too-many-instance-attributes,too-many-arguments</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, host=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">44363</span>, username=<span class="hljs-string">'anon'</span>, key=<span class="hljs-string">'1234'</span>, insecure=False, is_node=False)</span>:</span></code></pre>
   </div>
 
   
@@ -202,8 +386,12 @@ server. It may optionally implement <code>Node</code>.</p>
   
 
   <div class="code">
-    <pre><code>        self.hostname = hostname
-        self.port = port</code></pre>
+    <pre><code>        self.host = host
+        self.port = port
+
+        self.server_info = {
+            <span class="hljs-string">'version'</span>: <span class="hljs-keyword">None</span>
+        }</code></pre>
   </div>
 
   
@@ -335,8 +523,77 @@ successfully authenticated already at some point.</p>
   
 
   <div class="code">
-    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_task</span><span class="hljs-params">(self)</span>:</span>
-        <span class="hljs-keyword">return</span> self.task</code></pre>
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_task</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns the task we&#39;re working on, if present.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.task</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Server info setters.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_host_port</span><span class="hljs-params">(self, host, port)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Utility function to set host and port of the server. Returns <code>True</code>
+if <code>host</code> and <code>port</code> have been set, <code>False</code> otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> self.is_connected():
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+            
+        self.host = host
+        self.port = port
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_insecure</span><span class="hljs-params">(self, insecure)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Utility function to set HTTP/HTTPS. Returns <code>true</code> if the flag has been set, <code>False</code> otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> self.is_connected():
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+            
+        self.insecure = insecure
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span></code></pre>
   </div>
 
   
@@ -350,7 +607,7 @@ successfully authenticated already at some point.</p>
   
 
   <div class="code">
-    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_hostname_port</span><span class="hljs-params">(self)</span>:</span></code></pre>
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_host_port</span><span class="hljs-params">(self)</span>:</span></code></pre>
   </div>
 
   
@@ -358,15 +615,26 @@ successfully authenticated already at some point.</p>
 <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>Returns a pretty <code>hostname:port</code> string.</p>
+    <div class="text markdown"><p>Returns a pretty <code>scheme://host:port</code> string.</p>
 </div>
   </aside>
   
 
   <div class="code">
-    <pre><code>        <span class="hljs-keyword">return</span> self.get_url()
+    <pre><code>        <span class="hljs-keyword">return</span> self.build_url()</code></pre>
+  </div>
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_url</span><span class="hljs-params">(self, path=<span class="hljs-string">''</span>)</span>:</span></code></pre>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="paths">Paths</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_url</span><span class="hljs-params">(self, path=<span class="hljs-string">''</span>)</span>:</span></code></pre>
   </div>
 
   
@@ -385,7 +653,96 @@ successfully authenticated already at some point.</p>
         <span class="hljs-keyword">if</span> self.insecure:
             scheme = <span class="hljs-string">'http'</span>
 
-        <span class="hljs-keyword">return</span> urljoin(scheme + <span class="hljs-string">'://'</span> + self.hostname + <span class="hljs-string">':'</span> + str(self.port), path)</code></pre>
+        <span class="hljs-keyword">return</span> urljoin(scheme + <span class="hljs-string">'://'</span> + self.host + <span class="hljs-string">':'</span> + str(self.port), path)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="parse-response-json">Parse response JSON</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_json</span><span class="hljs-params">(json_string)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Parses a <code>json_string</code> and returns the Python object; raises
+<code>Error(&#39;invalid-json&#39;)</code> if the string could not be decoded.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">try</span>:
+            json_data = json.loads(json_string)
+        <span class="hljs-keyword">except</span> json.decoder.JSONDecodeError <span class="hljs-keyword">as</span> _:
+            print(json_string)
+            
+            <span class="hljs-keyword">raise</span> Error(<span class="hljs-string">'invalid-json'</span>, <span class="hljs-string">'Invalid or malformed JSON could not be decoded'</span>)
+
+        <span class="hljs-keyword">return</span> json_data</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="server-communications">Server communications</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">request_get</span><span class="hljs-params">(self, path)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Submits a <code>GET</code> request to the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">try</span>:
+            response = self.session.get(self.build_url(path))
+        <span class="hljs-keyword">except</span> requests.exceptions.ConnectionError <span class="hljs-keyword">as</span> _:
+            print(_)
+            <span class="hljs-keyword">raise</span> Error(<span class="hljs-string">'network-error'</span>, <span class="hljs-string">'Could not connect to the server'</span>, self.get_host_port())</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Handle the response.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> response.status_code == <span class="hljs-number">200</span>:
+            <span class="hljs-keyword">return</span> self.parse_json(response.text)
+        
+        json_data = self.parse_json(response.text)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> all(k <span class="hljs-keyword">in</span> json_data <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> (<span class="hljs-string">'status'</span>, <span class="hljs-string">'code'</span>, <span class="hljs-string">'message'</span>)):
+            <span class="hljs-keyword">raise</span> Error(<span class="hljs-string">'invalid-json'</span>, <span class="hljs-string">'Invalid or malformed JSON could not be decoded'</span>)
+        
+        <span class="hljs-keyword">raise</span> Error(json_data[<span class="hljs-string">'code'</span>], json_data[<span class="hljs-string">'message'</span>], path)</code></pre>
   </div>
 
   
@@ -398,7 +755,7 @@ successfully authenticated already at some point.</p>
   
 
   <div class="code">
-    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connect</span><span class="hljs-params">(self)</span>:</span></code></pre>
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clear_server_info</span><span class="hljs-params">(self)</span>:</span></code></pre>
   </div>
 
   
@@ -406,18 +763,34 @@ successfully authenticated already at some point.</p>
 <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>Attempts to connect to the server.</p>
+    <div class="text markdown"><p>Resets server info.</p>
 </div>
   </aside>
   
 
   <div class="code">
-    <pre><code>        <span class="hljs-keyword">try</span>:
-            response = self.session.get(self.get_url(<span class="hljs-string">'/version'</span>))
-        <span class="hljs-keyword">except</span> requests.exceptions.ConnectionError <span class="hljs-keyword">as</span> _:
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+    <pre><code>        self.server_info = {
+            <span class="hljs-string">'version'</span>: <span class="hljs-keyword">None</span>
+        }
 
-        print(response.status_code)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connect</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Attempts to connect to the server. Returns <code>True</code> if connection was
+successful; <code>False</code> otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        response = self.request_get(<span class="hljs-string">'/v1/info.json'</span>)
+        self.server_info[<span class="hljs-string">'version'</span>] = response[<span class="hljs-string">'version'</span>]
 
         self.connected = <span class="hljs-keyword">True</span>
 
@@ -437,7 +810,9 @@ successfully authenticated already at some point.</p>
   
 
   <div class="code">
-    <pre><code>        self.connected = <span class="hljs-keyword">False</span></code></pre>
+    <pre><code>        self.connected = <span class="hljs-keyword">False</span>
+
+        self.clear_server_info()</code></pre>
   </div>
 
   
@@ -495,7 +870,7 @@ successfully authenticated already at some point.</p>
         </aside>
 
         <div class="code">
-          <span class="content page-generation-time">Generated Sat, 08 Apr 2017 20:01:08 GMT</span>
+          <span class="content page-generation-time">Generated Tue, 11 Apr 2017 19:29:03 GMT</span>
         </div>
         
       </section>

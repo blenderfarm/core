@@ -1,4 +1,6 @@
 
+"""Job class."""
+
 from . import serializable
 from . import task
 

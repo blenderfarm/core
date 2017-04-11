@@ -1,11 +1,32 @@
 {
-  "files": ["blenderfarm/**/*.py", "setup.py"],
+  "files": [
+    "**/*.py",
+    "**/*.sh",
+    "API.md"
+  ],
+  "ignore": ["docs/**/*"],
   "readme": "README.md",
-  "name": "Blenderfarm",
+  "name": "Blenderfarm Core",
   "output": "docs",
   "version": "0.1.0",
   "links": {
-    "github": "https://github.com/zlsa/blenderfarm/"
+    "github": "https://github.com/blenderfarm/core/"
   },
-  "owners": "ZLSA Design"
+  "owners": "ZLSA Design",
+  "languages": {
+    "Shell": {
+      "extensions": ["sh"],
+      "name": {
+        "color": "shell",
+        "hljs": "bash",
+        "human": "Shell",
+        "abbr": "SH"
+      },
+      "single": [
+        "#"
+      ],
+      "multi": [
+      ]
+    }
+  }
 }

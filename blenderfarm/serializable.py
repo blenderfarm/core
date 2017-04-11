@@ -1,4 +1,6 @@
 
+"""Serialization."""
+
 import json
 
 class Serializable:

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>blenderfarm/serializable.py</title>
+    <title>blenderfarm/api_v1.py</title>
     <link rel="stylesheet" href="./../../public/style.css" />
     <link rel="icon" type="image/png" href="./../../public/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,7 @@
               <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm Core<span id="version">0.1.0</span></a>
               
               <div class="files-menu">
-                <span id="filename" title="blenderfarm/serializable.py">blenderfarm/serializable.py</span>
+                <span id="filename" title="blenderfarm/api_v1.py">blenderfarm/api_v1.py</span>
                 
               
                 <ul class="files hidable">
@@ -126,6 +126,19 @@
   
 <li class="file">
   
+<a href="../api.py" title="blenderfarm/api.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
 <a href="../client.py" title="blenderfarm/client.py">
     
 <span class="language" style="background-color: #3572A5">py</span>
@@ -165,6 +178,19 @@
   
 <li class="file">
   
+<a href="../serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
 <a href="../server.py" title="blenderfarm/server.py">
     
 <span class="language" style="background-color: #3572A5">py</span>
@@ -184,58 +210,6 @@
 
 
 <span class="filename">blenderfarm/task.py</span>
-
-</a>
-
-</li>
-  
-<li class="file">
-  
-<a href="../version.py" title="blenderfarm/version.py">
-    
-<span class="language" style="background-color: #3572A5">py</span>
-
-
-<span class="filename">blenderfarm/version.py</span>
-
-</a>
-
-</li>
-<li class="file separator">
-  
-  
-<a href="../api/__init__.py" title="blenderfarm/api/__init__.py">
-    
-<span class="language" style="background-color: #3572A5">py</span>
-
-
-<span class="filename">blenderfarm/api/__init__.py</span>
-
-</a>
-
-</li>
-  
-<li class="file">
-  
-<a href="../api/api.py" title="blenderfarm/api/api.py">
-    
-<span class="language" style="background-color: #3572A5">py</span>
-
-
-<span class="filename">blenderfarm/api/api.py</span>
-
-</a>
-
-</li>
-  
-<li class="file">
-  
-<a href="../api/v1.py" title="blenderfarm/api/v1.py">
-    
-<span class="language" style="background-color: #3572A5">py</span>
-
-
-<span class="filename">blenderfarm/api/v1.py</span>
 
 </a>
 
@@ -265,16 +239,22 @@
       
       <section class="section">
 
-  <aside class="comment">
-    <div class="text markdown"><p>Serialization.</p>
-</div>
-  </aside>
   
+  <aside class="comment empty">
+    <div class="text markdown"></div>
+  </aside>
 
   <div class="code">
-    <pre><code><span class="hljs-keyword">import</span> json
+    <pre><code><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> api
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Serializable</span>:</span></code></pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">API</span><span class="hljs-params">(api.API)</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, server)</span>:</span>
+        self.api_version = <span class="hljs-string">'1'</span>
+        
+        super().__init__(server)
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_routes</span><span class="hljs-params">(self)</span>:</span></code></pre>
   </div>
 
   
@@ -282,79 +262,16 @@
 <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>A class which can be serialized and deserialized.</p>
+    <div class="text markdown"><p>Initialize <code>bottle</code> routes.</p>
 </div>
   </aside>
   
 
   <div class="code">
-    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unserialize</span><span class="hljs-params">(self, data)</span>:</span></code></pre>
-  </div>
+    <pre><code>        self.bottle.route(self.api_path(<span class="hljs-string">'/info.json'</span>), callback=self.route_info)
 
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>Unserializes the data returned by the <code>serialize()</code> method.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>        <span class="hljs-keyword">pass</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serialize</span><span class="hljs-params">(self)</span>:</span> <span class="hljs-comment"># pylint: disable=no-self-use</span></code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>Returns a Python object; this object will eventually be passed to
-<code>json.dumps()</code> so be sure to use serializable types only.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>        out = {}
-
-        <span class="hljs-keyword">return</span> out
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serialize_json</span><span class="hljs-params">(self)</span>:</span></code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>Returns the JSON string version of this <code>Node</code>.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>        <span class="hljs-keyword">return</span> json.dumps(self.serialize())
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unserialize_json</span><span class="hljs-params">(self, json_data)</span>:</span></code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>Unpacks the <code>json_data</code> and sends it to the <code>unserialize()</code>
-method. Inverse of the <code>serialize_json()</code> method.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>        self.unserialize(json.loads(json_data))</code></pre>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_info</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'route info!'</span>)</code></pre>
   </div>
 
   
@@ -369,7 +286,7 @@ method. Inverse of the <code>serialize_json()</code> method.</p>
         </aside>
 
         <div class="code">
-          <span class="content page-generation-time">Generated Tue, 11 Apr 2017 19:29:03 GMT</span>
+          <span class="content page-generation-time">Generated Sat, 08 Apr 2017 22:09:35 GMT</span>
         </div>
         
       </section>

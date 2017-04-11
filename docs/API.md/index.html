@@ -1,21 +1,21 @@
 <!doctype html>
 <html>
   <head>
-    <title>setup.py</title>
+    <title>API.md</title>
     <link rel="stylesheet" href="./../public/style.css" />
     <link rel="icon" type="image/png" href="./../public/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="./../public/jquery.min.js"></script>
     <script src="./../public/script.js"></script>
   </head>
-  <body class="code">
+  <body class="markdown">
     
     <main id="sections">
 
       <!-- The header -->
 
+      <section class="section header files-hidden markdown" id="header">
         
-      <section class="section header files-hidden" id="header">
 
         <aside class="comment">
 
@@ -27,25 +27,12 @@
               <a id="project-overview" href="./.." title="Project Overview">Blenderfarm Core<span id="version">0.1.0</span></a>
               
               <div class="files-menu">
-                <span id="filename" title="setup.py">setup.py</span>
+                <span id="filename" title="API.md">API.md</span>
                 
               
                 <ul class="files hidable">
                   
                   
-<li class="file">
-  
-<a href="../API.md" title="API.md">
-    
-<span class="language" style="background-color: transparent">MD</span>
-
-
-<span class="filename">API.md</span>
-
-</a>
-
-</li>
-  
 <li class="file">
   
 <a href="../client.py" title="client.py">
@@ -67,6 +54,19 @@
 
 
 <span class="filename">server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
 
 </a>
 
@@ -255,78 +255,44 @@
             
         </aside>
 
-        
-        <div class="code empty">
+        <div class="code">
+          <div class="markdown"><h1 id="blenderfarm-server-client-api-v1">Blenderfarm server-client API, v1</h1><p>All communications are done via HTTP. Authentication is performed with
+HTTP Basic Authentication; responses are sent as JSON.</p>
+<p>All endpoints require a username/password (key) combination with HTTP
+Basic Authentication unless otherwise specified.</p>
+<h2 id="response-format">Response format</h2><p>The JSON response will always contain a <code>status</code> key; if the action
+was successful, the value will be <code>&quot;ok&quot;</code>; if there were errors, the
+value will be <code>&quot;error&quot;</code>.</p>
+<p>If <code>status</code> is <code>&quot;error&quot;</code>, a machine-readable error code will be
+returned in <code>&quot;code&quot;</code>, and auser-facing error message will be returned
+in <code>message</code>.</p>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"error"</span>,
+  <span class="hljs-attr">"code"</span>: <span class="hljs-string">"too-many-teapots"</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Too many concurrent teapots"</span>
+}
+</code></pre>
+<h3 id="status-codes">Status codes</h3><p>The status code for all valid requests must be <code>200</code>; invalid requests
+must use <code>400</code>; and if the endpoint does not exist, <code>404</code>.</p>
+<h2 id="parameters">Parameters</h2><h2 id="endpoints">Endpoints</h2><h3 id="-v1-info-json"><code>/v1/info.json</code></h3><p>Returns server info:</p>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"ok"</span>,
+  <span class="hljs-attr">"server_version"</span>: <span class="hljs-string">"0.1.0"</span>,
+  <span class="hljs-attr">"server_uptime"</span>: <span class="hljs-number">30</span>
+}
+</code></pre>
+<ul>
+<li><code>server_version</code> is the version of Blenderfarm running on the server.</li>
+<li><code>server_uptime</code> is the number of seconds the Blenderfarm server has been running.</li>
+</ul>
+<p>This endpoint does <em>not</em> require authentication.</p>
+</div>
         </div>
+        
 
       </section>
 
       <!-- The main code section -->
-      
-      <section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>setup.py for Blenderfarm</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code><span class="hljs-keyword">from</span> distutils.core <span class="hljs-keyword">import</span> setup
-
-setup(</code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>User-facing application name.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>    name=<span class="hljs-string">"Blenderfarm"</span>,
-
-    version=<span class="hljs-string">"0.1.0"</span>,
-
-    author=<span class="hljs-string">"Jon Ross"</span>,
-    author_email=<span class="hljs-string">"jonross.zlsa@gmail.com"</span>,</code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>See <code>blenderfarm/</code>.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>    packages=[<span class="hljs-string">"blenderfarm"</span>],
-
-    include_package_data=<span class="hljs-keyword">True</span>,
-
-    <span class="hljs-comment">#license="LICENSE.txt",</span>
-    description=<span class="hljs-string">""</span>,
-
-    <span class="hljs-comment">#long_description=open("README.txt").read(),</span>
-
-    install_requires=[
-
-    ]
-
-)</code></pre>
-  </div>
-
-  
-</section>
-
-      
       
       <section class="section footer" id="footer">
         

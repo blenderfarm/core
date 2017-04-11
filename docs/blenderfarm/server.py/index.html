@@ -24,7 +24,7 @@
             <div class="file-path">
               
               
-              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm<span id="version">0.1.0</span></a>
+              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm Core<span id="version">0.1.0</span></a>
               
               <div class="files-menu">
                 <span id="filename" title="blenderfarm/server.py">blenderfarm/server.py</span>
@@ -33,6 +33,45 @@
                 <ul class="files hidable">
                   
                   
+<li class="file">
+  
+<a href="../../API.md" title="API.md">
+    
+<span class="language" style="background-color: transparent">MD</span>
+
+
+<span class="filename">API.md</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../client.py" title="client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../server.py" title="server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">server.py</span>
+
+</a>
+
+</li>
+  
 <li class="file">
   
 <a href="../../setup.py" title="setup.py">
@@ -45,8 +84,47 @@
 </a>
 
 </li>
+  
+<li class="file">
+  
+<a href="../../build-documentation.sh" title="build-documentation.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">build-documentation.sh</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../run-pylint.sh" title="run-pylint.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">run-pylint.sh</span>
+
+</a>
+
+</li>
 <li class="file separator">
   
+  
+<a href="../__init__.py" title="blenderfarm/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
   
 <a href="../client.py" title="blenderfarm/client.py">
     
@@ -110,6 +188,58 @@
 </a>
 
 </li>
+  
+<li class="file">
+  
+<a href="../version.py" title="blenderfarm/version.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/version.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../api/__init__.py" title="blenderfarm/api/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../api/api.py" title="blenderfarm/api/api.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/api.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../api/v1.py" title="blenderfarm/api/v1.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/v1.py</span>
+
+</a>
+
+</li>
 
                   
                 </ul>
@@ -136,7 +266,275 @@
       <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>Blenderfarm server.</p>
+    <div class="text markdown"><p>Blenderfarm Server implementation.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">import</span> json
+
+<span class="hljs-keyword">from</span> http.server <span class="hljs-keyword">import</span> BaseHTTPRequestHandler, HTTPServer
+<span class="hljs-keyword">from</span> socketserver <span class="hljs-keyword">import</span> ThreadingMixIn
+
+<span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> api
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmHTTPServerRequestHandler</span><span class="hljs-params">(BaseHTTPRequestHandler)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Blenderfarm HTTP request handler. This has to manage the different
+API versions and provide generic fallbacks in case the APIs mess
+up. This class should NEVER fail.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_text</span><span class="hljs-params">(self, text_data)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>This method encodes <code>text_data</code> as UTF-8, then responds with it.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.wfile.write(bytes(text_data, <span class="hljs-string">'utf8'</span>))
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_json</span><span class="hljs-params">(self, json_data)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>This method automatically converts the Python object into a JSON
+string, then encodes it as UTF-8 and responds with it.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.send_text(json.dumps(json_data))
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">respond_json</span><span class="hljs-params">(self, json_data, status=<span class="hljs-number">200</span>)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Sets the HTTP status code and calls <code>send_json()</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.send_response(status)
+        self.send_header(<span class="hljs-string">'Content-type'</span>, <span class="hljs-string">'application/json'</span>)
+        self.end_headers()
+
+        self.send_json(json_data)
+
+        <span class="hljs-keyword">return</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">respond_error</span><span class="hljs-params">(self, status)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Responds with an HTTP error.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.send_response(status)
+        self.send_header(<span class="hljs-string">'Content-type'</span>, <span class="hljs-string">'text/plain'</span>)
+        self.end_headers()
+
+        self.send_text(str(status))
+
+        <span class="hljs-keyword">return</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">detect_api_version</span><span class="hljs-params">(self, path)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Given a path, tries to figure out which API endpoint to send it
+to. Essentially, it splits the path into directories, then uses the
+name of the first directory. For example, <code>/v1/foo.json</code> would result
+in <code>[&#39;v1&#39;, &#39;foo.json&#39;]</code>. The second element will not start with a <code>/</code>,
+but otherwise it should be identical to <code>path</code> minus the first
+element.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        path = self.path.split(<span class="hljs-string">'/'</span>)[<span class="hljs-number">1</span>:]
+
+        <span class="hljs-keyword">if</span> len(path) &gt;= <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> [path[<span class="hljs-number">0</span>], <span class="hljs-string">'/'</span>.join(path[<span class="hljs-number">1</span>:])]
+
+        <span class="hljs-keyword">return</span> [<span class="hljs-keyword">None</span>, <span class="hljs-string">'/'</span>.join(path)]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>pylint: disable=invalid-name</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_GET</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Responds to <code>GET</code> requests.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        api_version, path = self.detect_api_version(self.path)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Requesting <code>/</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> api_version:
+            self.respond_error(<span class="hljs-number">400</span>)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Requesting a path starting with something other than <code>v1</code>, <code>v2</code>, etc.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> api_version <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.api_handlers:
+            self.respond_error(<span class="hljs-number">400</span>)
+
+        api_handler = self.api_handlers[api_version]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>API.get_route()</code> should <em>always</em> return a valid route; if
+the requested route is missing, it should return its default
+error handler route.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        route_handler = api_handler.get_route(path)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If the API handler has truly messed up, fall back to our
+generic HTTP error response and respond with 500.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> route_handler:
+            self.respond_error(<span class="hljs-number">500</span>)
+            <span class="hljs-keyword">return</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>request, response</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        route_handler(self, self)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_message</span><span class="hljs-params">(self, _format, *args)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Inhibit logging.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = _format, args
+        
+        <span class="hljs-keyword">return</span>
+
+
+<span class="hljs-comment">#from . import api_v1</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadedHTTPServer</span><span class="hljs-params">(ThreadingMixIn, HTTPServer)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Handle requests in a separate thread.</p>
 </div>
   </aside>
   
@@ -156,8 +554,89 @@
   
 
   <div class="code">
-    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, host=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">44363</span>)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Server information.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.host = host
+        self.port = port
+
         self.jobs = []
+
+        self.init_api_handlers()
+        self.init_server()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_api_handlers</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Initializes our API handlers.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.api_handlers = {}
+
+        v1 = api.v1.API(self).init() <span class="hljs-comment"># pylint: disable=invalid-name</span>
+        
+        self.api_handlers[<span class="hljs-string">'v1'</span>] = v1
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_server</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Initialize the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        request_handler = BlenderfarmHTTPServerRequestHandler
+        request_handler.server = self
+
+        request_handler.api_handlers = {
+            <span class="hljs-string">'v1'</span>: self.api_handlers[<span class="hljs-string">'v1'</span>]
+        }
+
+        self.httpd = ThreadedHTTPServer((self.host, self.port), request_handler)
+
+        <span class="hljs-comment">#self.api_v1 = api_v1.API(self).init()</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Starts the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        print(<span class="hljs-string">'Starting server at '</span> + self.host + <span class="hljs-string">':'</span> + str(self.port))
+        self.httpd.serve_forever()
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_next_task</span><span class="hljs-params">(self, parameters)</span>:</span></code></pre>
   </div>
@@ -188,7 +667,7 @@
         </aside>
 
         <div class="code">
-          <span class="content page-generation-time">Generated Sat, 08 Apr 2017 20:01:08 GMT</span>
+          <span class="content page-generation-time">Generated Tue, 11 Apr 2017 19:29:03 GMT</span>
         </div>
         
       </section>
