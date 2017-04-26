@@ -1,0 +1,641 @@
+<!doctype html>
+<html>
+  <head>
+    <title>blenderfarm/db.py</title>
+    <link rel="stylesheet" href="./../../public/style.css" />
+    <link rel="icon" type="image/png" href="./../../public/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./../../public/jquery.min.js"></script>
+    <script src="./../../public/script.js"></script>
+  </head>
+  <body class="code">
+    
+    <main id="sections">
+
+      <!-- The header -->
+
+        
+      <section class="section header files-hidden" id="header">
+
+        <aside class="comment">
+
+          <header>
+
+            <div class="file-path">
+              
+              
+              <a id="project-overview" href="./../.." title="Project Overview">Blenderfarm Core<span id="version">0.1.0</span></a>
+              
+              <div class="files-menu">
+                <span id="filename" title="blenderfarm/db.py">blenderfarm/db.py</span>
+                
+              
+                <ul class="files hidable">
+                  
+                  
+<li class="file">
+  
+<a href="../../API.md" title="API.md">
+    
+<span class="language" style="background-color: transparent">MD</span>
+
+
+<span class="filename">API.md</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../client.py" title="client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../server.py" title="server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../build-documentation.sh" title="build-documentation.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">build-documentation.sh</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../run-pylint.sh" title="run-pylint.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">run-pylint.sh</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../__init__.py" title="blenderfarm/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../client.py" title="blenderfarm/client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../digest.py" title="blenderfarm/digest.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/digest.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../error.py" title="blenderfarm/error.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/error.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../job.py" title="blenderfarm/job.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/job.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../node.py" title="blenderfarm/node.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/node.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../server.py" title="blenderfarm/server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../task.py" title="blenderfarm/task.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/task.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../version.py" title="blenderfarm/version.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/version.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../api/__init__.py" title="blenderfarm/api/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../api/api.py" title="blenderfarm/api/api.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/api.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../api/v1.py" title="blenderfarm/api/v1.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/v1.py</span>
+
+</a>
+
+</li>
+
+                  
+                </ul>
+                
+              </div>
+                
+            </div>
+
+            <div class="spacer"></div>
+            
+            
+          </header>
+            
+        </aside>
+
+        
+        <div class="code empty">
+        </div>
+
+      </section>
+
+      <!-- The main code section -->
+      
+      <section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Blenderfarm database management</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> random
+<span class="hljs-keyword">import</span> string
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DB</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Generic database abstract class.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, filename)</span>:</span>
+        self.filename = filename</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h1 id="save-restore">Save/restore</h1></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Saves the db to disk.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">with</span> open(self.filename, <span class="hljs-string">'w'</span>) <span class="hljs-keyword">as</span> dbfile:
+            json.dump(self._save(), dbfile)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">restore</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Restores the db from disk. Returns <code>True</code> if restoration happened,
+<code>False</code> otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">with</span> open(self.filename, <span class="hljs-string">'r'</span>) <span class="hljs-keyword">as</span> dbfile:
+                self._restore(json.load(dbfile))
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+        <span class="hljs-keyword">except</span> FileNotFoundError:
+            <span class="hljs-comment">#print('"' + self.filename + '" not saved yet; nothing to restore')</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">refresh</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Attempts to re-read the database on disk in case of changes.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.restore()</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>pylint: disable=no-self-use</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_save</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns a Python object to be JSON stringified.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> {}
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_restore</span><span class="hljs-params">(self, data)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Populates the data with the Python object returned by <code>_save</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">pass</span>
+    
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Single user. Basically stores data for <code>Users</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, username=None, key=None)</span>:</span>
+        self.username = username
+        self.key = key
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Dumps to a Python object.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">'username'</span>: self.username,
+            <span class="hljs-string">'key'</span>: self.key
+        }
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">restore</span><span class="hljs-params">(self, data)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Restores from a Python object.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.username = data[<span class="hljs-string">'username'</span>]
+        self.key = data[<span class="hljs-string">'key'</span>]
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Users</span><span class="hljs-params">(DB)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Users database.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__(<span class="hljs-string">'users.json'</span>)
+        
+        self.users = []</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If we don&#39;t have any saved data, add an admin user.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.restore():
+            user = self.add(<span class="hljs-string">'admin'</span>)
+            
+            print(<span class="hljs-string">'Adding first user: "'</span> + user.username+ <span class="hljs-string">'"; key '</span> + user.key)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h1 id="save-restore">Save/restore</h1></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_save</span><span class="hljs-params">(self)</span>:</span>
+        out_users = []
+
+        <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> self.users:
+            out_users.append(user.save())
+
+        <span class="hljs-keyword">return</span> out_users
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_restore</span><span class="hljs-params">(self, data)</span>:</span>
+        self.users = []
+
+        <span class="hljs-keyword">for</span> user_data <span class="hljs-keyword">in</span> data:
+            user = User()
+            user.restore(user_data)
+
+            self.users.append(user)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user</span><span class="hljs-params">(self, username)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns the appropriate <code>User</code>, or <code>None</code> if no such user
+exists.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.refresh()
+        
+        <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> self.users:
+            <span class="hljs-keyword">if</span> user.username == username:
+                <span class="hljs-keyword">return</span> user
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span><span class="hljs-params">(self, username)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Creates a user with username <code>username</code> and generates a random
+key. Returns the newly created <code>User</code> or <code>None</code> if no user was created.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> self.get_user(username):
+            print(<span class="hljs-string">'attempted to add duplicate user "'</span> + username + <span class="hljs-string">'"'</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
+
+        key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
+        key = <span class="hljs-string">''</span>.join(random.SystemRandom().choice(key_characters) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(<span class="hljs-number">16</span>))
+
+        user = User(username, key)
+
+        self.users.append(user)
+
+        self.save()
+        
+        <span class="hljs-keyword">return</span> user</code></pre>
+  </div>
+
+  
+</section>
+
+      
+      
+      <section class="section footer" id="footer">
+        
+        <aside class="comment">
+          <span class="content project-copyright">&copy; Copyright 2017 ZLSA Design.</span>
+        </aside>
+
+        <div class="code">
+          <span class="content page-generation-time">Generated Wed, 26 Apr 2017 20:01:26 GMT</span>
+        </div>
+        
+      </section>
+      
+    </main>
+
+  </body>
+</html>
+

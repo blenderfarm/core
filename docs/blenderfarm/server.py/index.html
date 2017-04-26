@@ -139,6 +139,45 @@
   
 <li class="file">
   
+<a href="../db.py" title="blenderfarm/db.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/db.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../digest.py" title="blenderfarm/digest.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/digest.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../error.py" title="blenderfarm/error.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/error.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
 <a href="../job.py" title="blenderfarm/job.py">
     
 <span class="language" style="background-color: #3572A5">py</span>
@@ -273,11 +312,14 @@
 
   <div class="code">
     <pre><code><span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> traceback
 
 <span class="hljs-keyword">from</span> http.server <span class="hljs-keyword">import</span> BaseHTTPRequestHandler, HTTPServer
 <span class="hljs-keyword">from</span> socketserver <span class="hljs-keyword">import</span> ThreadingMixIn
 
 <span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> api
+<span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> db
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlenderfarmHTTPServerRequestHandler</span><span class="hljs-params">(BaseHTTPRequestHandler)</span>:</span></code></pre>
   </div>
@@ -289,7 +331,7 @@
   <aside class="comment">
     <div class="text markdown"><p>Blenderfarm HTTP request handler. This has to manage the different
 API versions and provide generic fallbacks in case the APIs mess
-up. This class should NEVER fail.</p>
+up. This class should always catch every exception.</p>
 </div>
   </aside>
   
@@ -390,6 +432,20 @@ element.</p>
   </aside>
   
 
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Remove the leading empty string in the resulting array.</p>
+</div>
+  </aside>
+  
+
   <div class="code">
     <pre><code>        path = self.path.split(<span class="hljs-string">'/'</span>)[<span class="hljs-number">1</span>:]
 
@@ -397,6 +453,124 @@ element.</p>
             <span class="hljs-keyword">return</span> [path[<span class="hljs-number">0</span>], <span class="hljs-string">'/'</span>.join(path[<span class="hljs-number">1</span>:])]
 
         <span class="hljs-keyword">return</span> [<span class="hljs-keyword">None</span>, <span class="hljs-string">'/'</span>.join(path)]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>pylint: disable=invalid-name</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_method</span><span class="hljs-params">(self, method)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Responds to <code>method</code> requests.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">try</span>:
+
+            api_version, path = self.detect_api_version(self.path)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Requesting <code>/</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> api_version:
+                print(<span class="hljs-string">'No API version present in path "'</span> + self.path + <span class="hljs-string">'"'</span>)
+                self.respond_error(<span class="hljs-number">400</span>)
+                <span class="hljs-keyword">return</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Requesting a path starting with something other than <code>v1</code>, <code>v2</code>, etc.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            <span class="hljs-keyword">if</span> api_version <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.api_handlers:
+                print(<span class="hljs-string">'No such API version "'</span> + api_version + <span class="hljs-string">'" (path: "'</span> + self.path + <span class="hljs-string">'")!'</span>)
+                self.respond_error(<span class="hljs-number">400</span>)
+                <span class="hljs-keyword">return</span>
+
+            api_handler = self.api_handlers[api_version]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>API.get_route()</code> should <em>always</em> return a valid route; if
+the requested route is missing, it should return its default
+error handler route.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            route_handler = api_handler.get_route(method, path)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If the API handler has truly messed up, fall back to our
+generic HTTP error response and respond with 500.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> route_handler:
+                self.respond_error(<span class="hljs-number">500</span>)
+                <span class="hljs-keyword">return</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>request, response</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            route_handler(self, self)
+            
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> _: <span class="hljs-comment"># pylint: disable=broad-except</span>
+            print(<span class="hljs-string">'Exception during "do_'</span> + method + <span class="hljs-string">'":'</span>)
+            traceback.print_exc()
+            self.respond_error(<span class="hljs-number">500</span>)</code></pre>
   </div>
 
   
@@ -424,7 +598,7 @@ element.</p>
   
 
   <div class="code">
-    <pre><code>        api_version, path = self.detect_api_version(self.path)</code></pre>
+    <pre><code>        self.do_method(<span class="hljs-string">'GET'</span>)</code></pre>
   </div>
 
   
@@ -432,14 +606,13 @@ element.</p>
 <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>Requesting <code>/</code>.</p>
+    <div class="text markdown"><p>pylint: disable=invalid-name</p>
 </div>
   </aside>
   
 
   <div class="code">
-    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> api_version:
-            self.respond_error(<span class="hljs-number">400</span>)</code></pre>
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_POST</span><span class="hljs-params">(self)</span>:</span></code></pre>
   </div>
 
   
@@ -447,63 +620,13 @@ element.</p>
 <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>Requesting a path starting with something other than <code>v1</code>, <code>v2</code>, etc.</p>
+    <div class="text markdown"><p>Responds to <code>POST</code> requests.</p>
 </div>
   </aside>
   
 
   <div class="code">
-    <pre><code>        <span class="hljs-keyword">if</span> api_version <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.api_handlers:
-            self.respond_error(<span class="hljs-number">400</span>)
-
-        api_handler = self.api_handlers[api_version]</code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p><code>API.get_route()</code> should <em>always</em> return a valid route; if
-the requested route is missing, it should return its default
-error handler route.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>        route_handler = api_handler.get_route(path)</code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p>If the API handler has truly messed up, fall back to our
-generic HTTP error response and respond with 500.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> route_handler:
-            self.respond_error(<span class="hljs-number">500</span>)
-            <span class="hljs-keyword">return</span></code></pre>
-  </div>
-
-  
-</section>
-<section class="section">
-
-  <aside class="comment">
-    <div class="text markdown"><p><code>request, response</code>.</p>
-</div>
-  </aside>
-  
-
-  <div class="code">
-    <pre><code>        route_handler(self, self)
+    <pre><code>        self.do_method(<span class="hljs-string">'POST'</span>)
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_message</span><span class="hljs-params">(self, _format, *args)</span>:</span></code></pre>
   </div>
@@ -576,6 +699,26 @@ generic HTTP error response and respond with 500.</p>
         self.init_api_handlers()
         self.init_server()
 
+        self.users = db.Users()
+
+        self.start_time = time.monotonic()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_uptime</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns our uptime, in fractional seconds.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> time.monotonic() - self.start_time
+
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_api_handlers</span><span class="hljs-params">(self)</span>:</span></code></pre>
   </div>
 
@@ -592,7 +735,7 @@ generic HTTP error response and respond with 500.</p>
   <div class="code">
     <pre><code>        self.api_handlers = {}
 
-        v1 = api.v1.API(self).init() <span class="hljs-comment"># pylint: disable=invalid-name</span>
+        v1 = api.v1.Server(self).init() <span class="hljs-comment"># pylint: disable=invalid-name</span>
         
         self.api_handlers[<span class="hljs-string">'v1'</span>] = v1
 
@@ -635,8 +778,7 @@ generic HTTP error response and respond with 500.</p>
   
 
   <div class="code">
-    <pre><code>        print(<span class="hljs-string">'Starting server at '</span> + self.host + <span class="hljs-string">':'</span> + str(self.port))
-        self.httpd.serve_forever()
+    <pre><code>        self.httpd.serve_forever()
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_next_task</span><span class="hljs-params">(self, parameters)</span>:</span></code></pre>
   </div>
@@ -667,7 +809,7 @@ generic HTTP error response and respond with 500.</p>
         </aside>
 
         <div class="code">
-          <span class="content page-generation-time">Generated Tue, 11 Apr 2017 19:29:03 GMT</span>
+          <span class="content page-generation-time">Generated Wed, 26 Apr 2017 20:01:26 GMT</span>
         </div>
         
       </section>

@@ -139,6 +139,45 @@
   
 <li class="file">
   
+<a href="../../db.py" title="blenderfarm/db.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/db.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../digest.py" title="blenderfarm/digest.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/digest.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../../error.py" title="blenderfarm/error.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/error.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
 <a href="../../job.py" title="blenderfarm/job.py">
     
 <span class="language" style="background-color: #3572A5">py</span>
@@ -273,8 +312,24 @@
 
   <div class="code">
     <pre><code><span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> urllib.parse</code></pre>
+  </div>
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">API</span>:</span></code></pre>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Used for interfacing with the server. This is built into Blender so
+there aren&#39;t any problems when this is used as an addon.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">import</span> requests
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">APIServer</span>:</span></code></pre>
   </div>
 
   
@@ -295,7 +350,7 @@
 
         self.routes = {}
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route</span><span class="hljs-params">(self, path, handler)</span>:</span></code></pre>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route</span><span class="hljs-params">(self, method, path, handler)</span>:</span></code></pre>
   </div>
 
   
@@ -310,9 +365,12 @@ function that accepts parameters <code>request, response</code> and does somethi
   
 
   <div class="code">
-    <pre><code>        self.routes[path] = handler
+    <pre><code>        <span class="hljs-keyword">if</span> method <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.routes:
+            self.routes[method] = {}
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_route</span><span class="hljs-params">(self, path)</span>:</span></code></pre>
+        self.routes[method][path] = handler
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_route</span><span class="hljs-params">(self, method, path=None)</span>:</span></code></pre>
   </div>
 
   
@@ -327,11 +385,20 @@ error handler if no route exists.</p>
   
 
   <div class="code">
-    <pre><code>        <span class="hljs-keyword">if</span> path <span class="hljs-keyword">in</span> self.routes:
-            <span class="hljs-keyword">return</span> self.routes[path]
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> path:
+            path = method
+            method = <span class="hljs-string">'GET'</span>
 
-        <span class="hljs-keyword">if</span> <span class="hljs-string">'__error_404'</span> <span class="hljs-keyword">in</span> self.routes:
-            <span class="hljs-keyword">return</span> self.routes[<span class="hljs-string">'__error_404'</span>]
+        path = urllib.parse.urlparse(path).path
+        
+        <span class="hljs-keyword">if</span> method <span class="hljs-keyword">in</span> self.routes:
+            <span class="hljs-keyword">if</span> path <span class="hljs-keyword">in</span> self.routes[method]:
+                print(method + <span class="hljs-string">': '</span> + path)
+                <span class="hljs-keyword">return</span> self.routes[method][path]
+
+        <span class="hljs-keyword">if</span> <span class="hljs-string">'error_404'</span> <span class="hljs-keyword">in</span> self.routes[<span class="hljs-string">'__'</span>]:
+            print(<span class="hljs-string">'__: error_404 (requested: '</span> + method + <span class="hljs-string">': '</span> + path + <span class="hljs-string">')'</span>)
+            <span class="hljs-keyword">return</span> self.routes[<span class="hljs-string">'__'</span>][<span class="hljs-string">'error_404'</span>]
 
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
 
@@ -364,8 +431,8 @@ creation and initialization.</p>
   
 
   <div class="code">
-    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.get_route(<span class="hljs-string">'__error_404'</span>):
-            print(<span class="hljs-string">'error: subclasses of "API" should define an "__error_404" route'</span>)
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-string">'__'</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.routes <span class="hljs-keyword">or</span> <span class="hljs-string">'error_404'</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> self.routes[<span class="hljs-string">'__'</span>]:
+            print(<span class="hljs-string">'error: subclasses of "API" should define an "error_404" route with the "__" method'</span>)
             sys.exit(<span class="hljs-number">1</span>)
 
         <span class="hljs-keyword">return</span> self
@@ -384,7 +451,231 @@ creation and initialization.</p>
   
 
   <div class="code">
-    <pre><code>        <span class="hljs-keyword">pass</span></code></pre>
+    <pre><code>        <span class="hljs-keyword">pass</span>
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_url_params</span><span class="hljs-params">(request, response)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns the URL parameters; <code>{}</code> if none present.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = response
+        
+        data = urllib.parse.parse_qs(urllib.parse.urlparse(request.path).query)
+
+        <span class="hljs-keyword">return</span> {x: data[x][<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> data}
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_post_data</span><span class="hljs-params">(request, response)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns the <code>POST</code> data; <code>{}</code> if none present.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = response
+        
+        content_length = request.headers.get(<span class="hljs-string">'content-length'</span>)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> content_length:
+            <span class="hljs-keyword">return</span> {}
+        
+        length = int(content_length)
+        data = str(request.rfile.read(length), <span class="hljs-string">'utf8'</span>)
+        data = urllib.parse.parse_qs(urllib.parse.urlparse(<span class="hljs-string">'?'</span> + data).query)
+
+        <span class="hljs-keyword">return</span> {x: data[x][<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> data}
+
+    
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">APIClient</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Manages connecting to an API server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, host=<span class="hljs-string">'localhost'</span>, port=<span class="hljs-number">44363</span>, insecure=False)</span>:</span>
+        self.api_version = <span class="hljs-string">'0'</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Server information.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.host = host
+        self.port = port</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If <code>True</code>, use <code>http</code> instead of <code>https</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.insecure = insecure
+
+        self.session = requests.Session()</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="dynamic-state">Dynamic state</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.connected = <span class="hljs-keyword">False</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_host_port</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns a human-readable &quot;scheme://host:port/&quot; string.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.build_url(api_version=<span class="hljs-keyword">False</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_host_port</span><span class="hljs-params">(self, host, port)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Utility function to set host and port of the server. Returns <code>True</code>
+if <code>host</code> and <code>port</code> have been set, <code>False</code> otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> self.is_connected():
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+        self.host = host
+        self.port = port
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_insecure</span><span class="hljs-params">(self, insecure)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Utility function to set HTTP/HTTPS. Returns <code>true</code> if the flag has been set, <code>False</code> otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> self.is_connected():
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+        self.insecure = insecure
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_connected</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns true if we have connected to the server. Because of
+networking, we might not necessarily be able to connect, but we&#39;ve
+successfully authenticated already at some point.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.connected</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><h2 id="paths">Paths</h2></div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_url</span><span class="hljs-params">(self, path=<span class="hljs-string">''</span>, api_version=True)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Builds a base URL for the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        scheme = <span class="hljs-string">'https'</span>
+
+        <span class="hljs-keyword">if</span> self.insecure:
+            scheme = <span class="hljs-string">'http'</span>
+
+        <span class="hljs-keyword">if</span> api_version:
+            path = <span class="hljs-string">'/v'</span> + self.api_version + path
+
+        <span class="hljs-keyword">return</span> urllib.parse.urljoin(scheme + <span class="hljs-string">'://'</span> + self.host + <span class="hljs-string">':'</span> + str(self.port), path)</code></pre>
   </div>
 
   
@@ -399,7 +690,7 @@ creation and initialization.</p>
         </aside>
 
         <div class="code">
-          <span class="content page-generation-time">Generated Tue, 11 Apr 2017 19:29:03 GMT</span>
+          <span class="content page-generation-time">Generated Wed, 26 Apr 2017 20:01:26 GMT</span>
         </div>
         
       </section>

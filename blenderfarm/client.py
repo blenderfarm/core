@@ -1,36 +1,7 @@
 
 """Blenderfarm client."""
 
-from urllib.parse import urljoin
-import json
-
-# Used for interfacing with the server. This is built into Blender so
-# there aren't any problems when this is used as an addon.
-import requests
-
-# # `Error`
-
-class Error(Exception):
-
-    """Contains a server error response (see [API.md](:../API.md))"""
-
-    def __init__(self, code, message, context=None):
-        super().__init__(message)
-        
-        self.code = code
-        self.message = message
-        self.context = context
-
-    def __str__(self):
-        # pylint: disable=no-else-return
-        
-        if self.context:
-            return self.message + ': "' + self.context + '"'
-        elif self.message:
-            return self.message
-        else:
-            return self.code
-
+from . import api
 
 # # `Client`
 
@@ -44,32 +15,24 @@ server. It may optionally implement `Node`."""
     
     def __init__(self, host='localhost', port=44363, username='anon', key='1234', insecure=False, is_node=False):
 
+        self.api = api.v1.Client()
+
         # Server information.
         self.host = host
         self.port = port
 
-        self.server_info = {
-            'version': None
-        }
+        # If `True`, use `http` instead of `https`.
+        self.insecure = insecure
 
         # Credentials.
         self.username = username
         self.key = key
 
-        # If `True`, use `http` instead of `https`.
-        self.insecure = insecure
-
         # Are we a node?
         self.is_node = is_node
 
-        # ## Dynamic state
-
-        self.connected = False
-
         # The task we are currently performing. Only applicable if `is_node` is True.
         self.task = None
-
-        self.session = requests.Session()
 
     # State utility functions.
 
@@ -78,7 +41,7 @@ server. It may optionally implement `Node`."""
 networking, we might not necessarily be able to connect, but we've
 successfully authenticated already at some point."""
         
-        return self.connected
+        return self.api.is_connected()
 
     def is_performing_task(self):
         """Returns `True` if we are currently performing a task."""
@@ -90,117 +53,41 @@ successfully authenticated already at some point."""
         """Returns the task we're working on, if present."""
         return self.task
 
-    # Server info setters.
+    # Server info.
+
+    def get_host_port(self):
+        """Returns a human-readable "scheme://host:port/" string."""
+        
+        return self.api.get_host_port()
 
     def set_host_port(self, host, port):
         """Utility function to set host and port of the server. Returns `True`
 if `host` and `port` have been set, `False` otherwise."""
 
-        if self.is_connected():
-            return False
-            
-        self.host = host
-        self.port = port
-
-        return True
+        return self.api.set_host_port(host, port)
 
     def set_insecure(self, insecure):
         """Utility function to set HTTP/HTTPS. Returns `true` if the flag has been set, `False` otherwise."""
 
-        if self.is_connected():
-            return False
-            
-        self.insecure = insecure
-
-        return True
+        return self.api.set_insecure(insecure)
 
     # Server connection utility functions.
 
-    def get_host_port(self):
-        """Returns a pretty `scheme://host:port` string."""
-
-        return self.build_url()
-
-    # ## Paths
-
-    def build_url(self, path=''):
-        """Builds a base URL for the server."""
-
-        scheme = 'https'
-
-        if self.insecure:
-            scheme = 'http'
-
-        return urljoin(scheme + '://' + self.host + ':' + str(self.port), path)
-
-    
-    # ## Parse response JSON
-
-    @staticmethod
-    def parse_json(json_string):
-        """Parses a `json_string` and returns the Python object; raises
-`Error('invalid-json')` if the string could not be decoded."""
-        try:
-            json_data = json.loads(json_string)
-        except json.decoder.JSONDecodeError as _:
-            print(json_string)
-            
-            raise Error('invalid-json', 'Invalid or malformed JSON could not be decoded')
-
-        return json_data
-    
-
-    # ## Server communications
-
-    def request_get(self, path):
-        """Submits a `GET` request to the server."""
-        
-        try:
-            response = self.session.get(self.build_url(path))
-        except requests.exceptions.ConnectionError as _:
-            print(_)
-            raise Error('network-error', 'Could not connect to the server', self.get_host_port())
-
-        # Handle the response.
-        
-        if response.status_code == 200:
-            return self.parse_json(response.text)
-        
-        json_data = self.parse_json(response.text)
-
-        if not all(k in json_data for k in ('status', 'code', 'message')):
-            raise Error('invalid-json', 'Invalid or malformed JSON could not be decoded')
-        
-        raise Error(json_data['code'], json_data['message'], path)
-
     # ## Server connection
 
-    def clear_server_info(self):
-        """Resets server info."""
-        
-        self.server_info = {
-            'version': None
-        }
+    def get_server_info(self, key):
+        """Returns "key" of server info; for example, "version" or "uptime"."""
+        return self.api.get_server_info(key)
 
+    def connect(self, user, key):
+        """Attempts to connect to the server. Does not catch any exceptions."""
 
-    def connect(self):
-        """Attempts to connect to the server. Returns `True` if connection was
-successful; `False` otherwise."""
-
-        response = self.request_get('/v1/info.json')
-        self.server_info['version'] = response['version']
-
-        self.connected = True
-
-        return True
+        return self.api.connect(user, key)
 
     def disconnect(self):
         """Disconnects from the server."""
 
-        self.connected = False
-
-        self.clear_server_info()
-
+        return self.api.disconnect()
         
     # ## Lifecycle
 

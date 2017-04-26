@@ -126,6 +126,45 @@
   
 <li class="file">
   
+<a href="../blenderfarm/db.py" title="blenderfarm/db.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/db.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/digest.py" title="blenderfarm/digest.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/digest.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/error.py" title="blenderfarm/error.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/error.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
 <a href="../blenderfarm/job.py" title="blenderfarm/job.py">
     
 <span class="language" style="background-color: #3572A5">py</span>
@@ -256,25 +295,52 @@
         </aside>
 
         <div class="code">
-          <div class="markdown"><h1 id="blenderfarm-server-client-api-v1">Blenderfarm server-client API, v1</h1><p>All communications are done via HTTP. Authentication is performed with
-HTTP Basic Authentication; responses are sent as JSON.</p>
-<p>All endpoints require a username/password (key) combination with HTTP
-Basic Authentication unless otherwise specified.</p>
+          <div class="markdown"><h1 id="blenderfarm-server-client-api-v1">Blenderfarm server-client API, v1</h1><p>All communications are done via HTTP. Responses are sent as JSON.</p>
 <h2 id="response-format">Response format</h2><p>The JSON response will always contain a <code>status</code> key; if the action
 was successful, the value will be <code>&quot;ok&quot;</code>; if there were errors, the
 value will be <code>&quot;error&quot;</code>.</p>
 <p>If <code>status</code> is <code>&quot;error&quot;</code>, a machine-readable error code will be
-returned in <code>&quot;code&quot;</code>, and auser-facing error message will be returned
-in <code>message</code>.</p>
+returned in <code>&quot;code&quot;</code>, and a user-facing error message will be returned
+in <code>message</code>. Optionally, the context will be returned in <code>context</code>;
+this will be, for example, the username during a failed authentication.</p>
 <pre><code class="lang-json">{
   <span class="hljs-attr">"status"</span>: <span class="hljs-string">"error"</span>,
   <span class="hljs-attr">"code"</span>: <span class="hljs-string">"too-many-teapots"</span>,
-  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Too many concurrent teapots"</span>
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Too many concurrent teapots"</span>,
+  <span class="hljs-attr">"context"</span>: <span class="hljs-string">"42"</span>
 }
 </code></pre>
-<h3 id="status-codes">Status codes</h3><p>The status code for all valid requests must be <code>200</code>; invalid requests
-must use <code>400</code>; and if the endpoint does not exist, <code>404</code>.</p>
-<h2 id="parameters">Parameters</h2><h2 id="endpoints">Endpoints</h2><h3 id="-v1-info-json"><code>/v1/info.json</code></h3><p>Returns server info:</p>
+<h3 id="status-codes">Status codes</h3><p>The status code for all valid requests must be <code>200</code>; invalid or
+malformed requests must use <code>400</code>; and if the endpoint does not exist,
+<code>404</code>. <code>500</code> will be sent in the case of a server error. Valid
+requests, including those which generate errors (such as failed
+authentication), must use code <code>200</code>.</p>
+<h4 id="generic-errors">Generic Errors</h4><ul>
+<li><code>invalid-user</code> if the user does not exist</li>
+<li><code>invalid-key</code> if the key does not match</li>
+<li><code>expired-request</code> if the time window for the request has expired</li>
+</ul>
+<h2 id="authentication">Authentication</h2><p>Authentication is done via HMAC. Paths requiring authentication must
+include three additional URL parameters; <code>user</code>, <code>digest</code>, and <code>time</code>.</p>
+<ul>
+<li><code>user</code> is the name of the authenticating user.</li>
+<li><code>digest</code> is the HMAC digest of the request data.</li>
+<li><code>time</code> is the timestamp of the request. The value itself must be the
+fractional epoch time; if <code>time</code> is too far in the past, the server
+may reject the request to avoid replay attacks. The exact window
+will not be specified, but it should be greater than 10 seconds and
+less than 1-2 minutes.</li>
+</ul>
+<p>The digest plaintext must start with the magic string
+&quot;BLENDERFARM&quot;. The keys are sorted alphabetically.</p>
+<p>Data (keys and values) are stored in the format
+<code>key:value\nkey:value\nkey:value...key:value</code>. Both <code>key</code> and <code>value</code>
+are the values after stringification, to avoid floating-point
+reproducibility issues.</p>
+<p>Obviously, the <code>digest</code> is added to the URL parameters list after it&#39;s
+been computed.</p>
+<h2 id="endpoints">Endpoints</h2><p>All endpoints must be preceded by <code>v1</code>; for example, <code>/v1/info.json</code>.</p>
+<h3 id="get-info-json">GET <code>info.json</code></h3><p>Returns server info:</p>
 <pre><code class="lang-json">{
   <span class="hljs-attr">"status"</span>: <span class="hljs-string">"ok"</span>,
   <span class="hljs-attr">"server_version"</span>: <span class="hljs-string">"0.1.0"</span>,
@@ -283,9 +349,41 @@ must use <code>400</code>; and if the endpoint does not exist, <code>404</code>.
 </code></pre>
 <ul>
 <li><code>server_version</code> is the version of Blenderfarm running on the server.</li>
-<li><code>server_uptime</code> is the number of seconds the Blenderfarm server has been running.</li>
+<li><code>server_uptime</code> is the number of fractional seconds the Blenderfarm server has been running.</li>
 </ul>
 <p>This endpoint does <em>not</em> require authentication.</p>
+<h3 id="post-session-verify-json">POST <code>session/verify.json</code></h3><p>Requests the creation of a new session token. The username and key
+must be sent as <code>POST</code> parameters named <code>user</code> and <code>key</code>,
+respectively.</p>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"ok"</span>,
+  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"abcdefghijklmnopqrstuvwxyz0123456789"</span>,
+  <span class="hljs-attr">"expires-in"</span>: <span class="hljs-number">86400</span>
+}
+</code></pre>
+<ul>
+<li><code>token</code> is the token, unique to this particular session.</li>
+<li><code>expires-in</code> is the number of seconds in which the token will become
+invalid. The client must request a new token before this many
+seconds have passed, or any further requests requiring
+authentication will fail.</li>
+</ul>
+<p>This endpoint does <em>not</em> require authentication.</p>
+<h4 id="errors">Errors</h4><ul>
+<li><code>no-user</code> if there&#39;s no such <code>user</code> (<code>context</code> will be the relevant username)</li>
+<li><code>bad-key</code> if there&#39;s no such <code>key</code> for the <code>user</code> (<code>context</code> will be the relevant username)</li>
+</ul>
+<h3 id="post-session-end-json">POST <code>session/end.json</code></h3><p>Requests the destruction of a session token. The session token to be
+ended must be sent as a <code>POST</code> parameter named <code>token</code>. Upon success,
+any further transactions using that particular session token will
+fail.</p>
+<pre><code class="lang-json">{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-string">"ok"</span>
+}
+</code></pre>
+<h4 id="errors">Errors</h4><ul>
+<li><code>bad-token</code> if there&#39;s no such <code>token</code></li>
+</ul>
 </div>
         </div>
         
@@ -301,7 +399,7 @@ must use <code>400</code>; and if the endpoint does not exist, <code>404</code>.
         </aside>
 
         <div class="code">
-          <span class="content page-generation-time">Generated Tue, 11 Apr 2017 19:29:03 GMT</span>
+          <span class="content page-generation-time">Generated Wed, 26 Apr 2017 20:01:26 GMT</span>
         </div>
         
       </section>
