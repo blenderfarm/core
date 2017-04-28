@@ -490,11 +490,6 @@ def get_action(name):
 
     return None
 
-# Ideally, this would never be imported as a library, but just in case...
-if __name__ == '__main__':
-
-    run()
-
 def run():
     """The fun part."""
 
@@ -514,3 +509,8 @@ def run():
     action.prefix = sys.argv[0]
 
     action.invoke(action.parse_arguments(sys.argv[2:]))
+    
+# Ideally, this would never be imported as a library, but just in case...
+if __name__ == '__main__':
+    run()
+
