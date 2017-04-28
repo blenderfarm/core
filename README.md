@@ -9,6 +9,14 @@ servers; you must host your own server and render nodes.
 This is alpha software, and backwards compatibility is *not* expected
 at this point. Do not use this in any production system (obviously).
 
+# Usage
+
+Run `bf.py`. If you start a server, databases will be created in the
+directory you're currently in.
+
+To start a blenderfarm server, run `bf.py server`. If you're stuck,
+use `bf.py help`.
+
 # Terminology
 
 #### Server

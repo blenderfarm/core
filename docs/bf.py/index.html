@@ -1,0 +1,1481 @@
+<!doctype html>
+<html>
+  <head>
+    <title>bf.py</title>
+    <link rel="stylesheet" href="./../public/style.css" />
+    <link rel="icon" type="image/png" href="./../public/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./../public/jquery.min.js"></script>
+    <script src="./../public/script.js"></script>
+  </head>
+  <body class="code">
+    
+    <main id="sections">
+
+      <!-- The header -->
+
+        
+      <section class="section header files-hidden" id="header">
+
+        <aside class="comment">
+
+          <header>
+
+            <div class="file-path">
+              
+              
+              <a id="project-overview" href="./.." title="Project Overview">Blenderfarm Core<span id="version">0.1.0</span></a>
+              
+              <div class="files-menu">
+                <span id="filename" title="bf.py">bf.py</span>
+                
+              
+                <ul class="files hidable">
+                  
+                  
+<li class="file">
+  
+<a href="../API.md" title="API.md">
+    
+<span class="language" style="background-color: transparent">MD</span>
+
+
+<span class="filename">API.md</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../client.py" title="client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../setup.py" title="setup.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">setup.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../build-documentation.sh" title="build-documentation.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">build-documentation.sh</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../run-pylint.sh" title="run-pylint.sh">
+    
+<span class="language" style="background-color: #89e051">SH</span>
+
+
+<span class="filename">run-pylint.sh</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../blenderfarm/__init__.py" title="blenderfarm/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/client.py" title="blenderfarm/client.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/client.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/db.py" title="blenderfarm/db.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/db.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/digest.py" title="blenderfarm/digest.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/digest.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/error.py" title="blenderfarm/error.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/error.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/job.py" title="blenderfarm/job.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/job.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/node.py" title="blenderfarm/node.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/node.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/serializable.py" title="blenderfarm/serializable.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/serializable.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/server.py" title="blenderfarm/server.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/server.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/task.py" title="blenderfarm/task.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/task.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/version.py" title="blenderfarm/version.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/version.py</span>
+
+</a>
+
+</li>
+<li class="file separator">
+  
+  
+<a href="../blenderfarm/api/__init__.py" title="blenderfarm/api/__init__.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/__init__.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/api/api.py" title="blenderfarm/api/api.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/api.py</span>
+
+</a>
+
+</li>
+  
+<li class="file">
+  
+<a href="../blenderfarm/api/v1.py" title="blenderfarm/api/v1.py">
+    
+<span class="language" style="background-color: #3572A5">py</span>
+
+
+<span class="filename">blenderfarm/api/v1.py</span>
+
+</a>
+
+</li>
+
+                  
+                </ul>
+                
+              </div>
+                
+            </div>
+
+            <div class="spacer"></div>
+            
+            
+          </header>
+            
+        </aside>
+
+        
+        <div class="code empty">
+        </div>
+
+      </section>
+
+      <!-- The main code section -->
+      
+      <section class="section">
+
+  
+  <aside class="comment empty">
+    <div class="text markdown"></div>
+  </aside>
+
+  <div class="code">
+    <pre><code><span class="hljs-comment">#!/usr/bin/env python3</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Blenderfarm command-line tool.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">import</span> sys
+
+<span class="hljs-keyword">import</span> blenderfarm
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Action</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>A command-line action that can be executed.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        self.name = <span class="hljs-string">''</span>
+        self.description = <span class="hljs-string">''</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Options format: <code>?name=default</code></p>
+<p>The question mark denotes an optional argument, the name is
+a plain string, and the optional default is an equals sign,
+followed by the default string value.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.options = []</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Used internally to display nicely formatted command-line text.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        self.prefix = <span class="hljs-string">''</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__lt__</span><span class="hljs-params">(self, other)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Make sorting work.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.name &lt; other.name
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_arguments</span><span class="hljs-params">(self, args, raise_errors=False)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Inserts actual arguments into <code>options</code> array that contains the
+named options (see <code>self.options</code>, above).</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        options = {}</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>For each option in our list of valid options;</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">for</span> option_index <span class="hljs-keyword">in</span> range(len(self.options)):</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>convert it into a dictionary containing <code>name</code>,
+<code>optional</code>, and `default.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            option_format = Action.get_option_format(self.options[option_index])</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Just to make it a bit easier.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            option_name = option_format[<span class="hljs-string">'name'</span>]
+            option_value = option_format[<span class="hljs-string">'default'</span>]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If the argument exists in <code>args</code>, then save the value.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            <span class="hljs-keyword">if</span> len(args) &gt;= option_index + <span class="hljs-number">1</span>:
+                option_value = args[option_index]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Otherwise, if the option is not optional and also not
+present, and <em>also</em> we&#39;ve asked to raise errors (for
+example, the help dialogs don&#39;t want to raise errors),
+then complain and exit.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            <span class="hljs-keyword">elif</span> <span class="hljs-keyword">not</span> option_format[<span class="hljs-string">'optional'</span>] <span class="hljs-keyword">and</span> raise_errors:
+                print(<span class="hljs-string">'! option "'</span> + option_name + <span class="hljs-string">'" (for action "'</span> + self.name + <span class="hljs-string">'") is not optional'</span>)
+                exit(<span class="hljs-number">1</span>)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Set the value of the option dictionary.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>            options[option_name] = option_value</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Take all extra arguments and stuff them into <code>__</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> len(args) &gt; len(self.options):
+            options[<span class="hljs-string">'__'</span>] = args[len(self.options):]
+        <span class="hljs-keyword">else</span>:
+            options[<span class="hljs-string">'__'</span>] = []
+
+        <span class="hljs-keyword">return</span> options
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_option_help</span><span class="hljs-params">(option)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Converts an option format into its human-readable format.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        option_format = Action.get_option_format(option)
+        name = option_format[<span class="hljs-string">'name'</span>]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Optional arguments are surrounded with <code>[square brackets]</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> option_format[<span class="hljs-string">'optional'</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'['</span> + name + <span class="hljs-string">']'</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Required arguments are surrounded with <code>&lt;angle brackets&gt;</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> <span class="hljs-string">'&lt;'</span> + name + <span class="hljs-string">'&gt;'</span>
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_option_format</span><span class="hljs-params">(option)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Converts an option format into a Python dictionary.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        option_format = {
+            <span class="hljs-string">'name'</span>: <span class="hljs-keyword">None</span>,
+            <span class="hljs-string">'optional'</span>: <span class="hljs-keyword">False</span>,
+            <span class="hljs-string">'default'</span>: <span class="hljs-keyword">None</span>
+        }</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If the option is optional, set the <code>optional</code> flag.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> option.startswith(<span class="hljs-string">'?'</span>):
+            option = option[<span class="hljs-number">1</span>:]
+            option_format[<span class="hljs-string">'optional'</span>] = <span class="hljs-keyword">True</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>If there&#39;s a default value</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-string">'='</span> <span class="hljs-keyword">in</span> option:
+            option_format[<span class="hljs-string">'default'</span>] = option.split(<span class="hljs-string">'='</span>)[<span class="hljs-number">1</span>]
+            option = option.split(<span class="hljs-string">'='</span>)[<span class="hljs-number">0</span>]
+
+        option_format[<span class="hljs-string">'name'</span>] = option
+
+        <span class="hljs-keyword">return</span> option_format
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_string_options_list</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Get a human-readable list of all the options. Used in help and usage.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        options = []
+
+        <span class="hljs-keyword">for</span> option <span class="hljs-keyword">in</span> self.options:
+            options.append(Action.get_option_help(option))
+
+        <span class="hljs-keyword">return</span> <span class="hljs-string">' '</span>.join(options)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_help_line</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns a human-readable help line, containing the prefix, the name, options, and the description.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.prefix + <span class="hljs-string">' '</span> + self.name.ljust(<span class="hljs-number">12</span>) + <span class="hljs-string">' '</span> + self.get_string_options_list().ljust(<span class="hljs-number">24</span>) + <span class="hljs-string">' '</span> + self.description
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_help_usage</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Same as above, but formatted slightly differently for usage listings.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> (self.prefix + <span class="hljs-string">' '</span> + self.name + <span class="hljs-string">' '</span> + self.get_string_options_list()).ljust(<span class="hljs-number">48</span>) + self.description
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">help</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out the help for this action.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = options
+        
+        print(self.get_help_usage())
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span>    <span class="hljs-comment"># pylint: disable=no-self-use</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Invokes this action.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        _ = options
+        
+        print(<span class="hljs-string">'override me'</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ActionList</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>An action that contains sub-actions.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.options = [<span class="hljs-string">'action'</span>]
+
+        self.actions = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action</span><span class="hljs-params">(self, name)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Attempts to find the requisite sub-action named <code>name</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        name = name.lower().strip()
+
+        <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> self.actions:
+            <span class="hljs-keyword">if</span> action.name == name:
+                <span class="hljs-keyword">return</span> action
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">help</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out help text, including help text for sub-actions.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        action_name = options[<span class="hljs-string">'action'</span>]
+
+        <span class="hljs-keyword">if</span> action_name:
+            action = self.get_action(action_name)
+
+            <span class="hljs-keyword">if</span> action:
+                action.prefix = self.prefix + <span class="hljs-string">' '</span> + self.name
+
+                action.help(action.parse_arguments(options[<span class="hljs-string">'__'</span>]))
+
+                <span class="hljs-keyword">return</span>
+
+        print(self.get_help_usage())
+
+        print()
+
+        <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> self.actions:
+            action.prefix = self.prefix + <span class="hljs-string">' '</span> + self.name
+            print(action.get_help_usage())
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Invokes the action.</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Get action name and arguments (will be an empty array if none are present.)</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        action_name = options[<span class="hljs-string">'action'</span>]
+        arguments = options[<span class="hljs-string">'__'</span>]
+
+        action = self.get_action(action_name)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> action:
+            self.help(options)
+            print()
+            print(<span class="hljs-string">'! no such sub-action "'</span> + action_name + <span class="hljs-string">'"'</span>)
+            <span class="hljs-keyword">return</span>
+
+        action.prefix = self.prefix + <span class="hljs-string">' '</span> + self.name
+        action.invoke(action.parse_arguments(arguments, <span class="hljs-keyword">True</span>))
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelpAction</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out the help page.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'help'</span>
+        self.description = <span class="hljs-string">'prints out help'</span>
+        self.options = [<span class="hljs-string">'?module'</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span>
+        print()</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>help &lt;foo&gt;</code></p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">if</span> options[<span class="hljs-string">'module'</span>] != <span class="hljs-keyword">None</span>:
+            action_name = options[<span class="hljs-string">'module'</span>]
+            action = get_action(action_name)
+
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> action:
+                print_help()
+                print()
+                print(<span class="hljs-string">'! no such action "'</span> + action_name + <span class="hljs-string">'"'</span>)
+                <span class="hljs-keyword">return</span>
+
+            action.prefix = self.prefix
+            action.help(action.parse_arguments(options[<span class="hljs-string">'__'</span>]))
+        <span class="hljs-keyword">else</span>:
+            print_help()
+
+        print()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VersionAction</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out the blenderfarm version.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'version'</span>
+        self.description = <span class="hljs-string">'prints out the blenderfarm version'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">help</span><span class="hljs-params">(self, options)</span>:</span>
+        print(self.get_help_usage())
+
+        print()
+
+        print(<span class="hljs-string">'only the version is printed, to make machine-parsing possible.'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span>
+        print(blenderfarm.__version__)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServerAction</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Starts the blenderfarm server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'server'</span>
+        self.description = <span class="hljs-string">'starts the blenderfarm server'</span>
+        self.options = [<span class="hljs-string">'?host=0.0.0.0'</span>, <span class="hljs-string">'?port=44363'</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">help</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out help text for the <code>server</code> action.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        print(self.description)
+
+        print()
+
+        print(<span class="hljs-string">'accepts two arguments: [host] and [port].'</span>)
+        print(<span class="hljs-string">'If omitted, the defaults of "0.0.0.0" and "44363" are used.'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Invokes the <code>server</code> action.</p>
+</div>
+  </aside>
+  
+
+
+  <div class="code empty">
+    <pre><code></code></pre>
+  </div>
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Get <code>host</code> and <code>port</code> from the options.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        host = options[<span class="hljs-string">'host'</span>]
+        port = options[<span class="hljs-string">'port'</span>]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Try converting the port to an int.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">try</span>:
+            port = int(port)
+        <span class="hljs-keyword">except</span> ValueError:
+            print(<span class="hljs-string">'! invalid port number "'</span> + port + <span class="hljs-string">'"'</span>)
+            <span class="hljs-keyword">return</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Create the blenderfarm <code>Server</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        server = blenderfarm.server.Server(host=host, port=port)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Print out a nice message, containing the host and port.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        print(<span class="hljs-string">'starting blenderfarm server at '</span> + host + <span class="hljs-string">' ('</span> + str(port) + <span class="hljs-string">')...'</span>)</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>And start the server.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        server.start()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminUserAddAction</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Adds a blenderfarm user.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'add'</span>
+        self.description = <span class="hljs-string">'adds a new user'</span>
+        self.options = [<span class="hljs-string">'username'</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">help</span><span class="hljs-params">(self, options)</span>:</span>
+        print(self.description)
+        print()
+        print(<span class="hljs-string">'the username must not exist yet'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Invokes the <code>user add</code> action.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        username = options[<span class="hljs-string">'username'</span>]
+
+        users_db = blenderfarm.db.Users()
+
+        user = users_db.get_user(username)
+
+        <span class="hljs-keyword">if</span> user:
+            print(<span class="hljs-string">'that username already exists:'</span>)
+        <span class="hljs-keyword">else</span>:
+            user = users_db.add(username)
+            print(<span class="hljs-string">'user creation successful:'</span>)
+
+        print(user.get_username_key())
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminUserRemoveAction</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Removes a blenderfarm user.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'remove'</span>
+        self.description = <span class="hljs-string">'removes a user'</span>
+        self.options = [<span class="hljs-string">'username'</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Invokes the <code>user remove</code> action.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        username = options[<span class="hljs-string">'username'</span>]
+
+        users_db = blenderfarm.db.Users()
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> users_db.get_user(username):
+            print(<span class="hljs-string">'! that username does not exist'</span>)
+            <span class="hljs-keyword">return</span>
+
+        users_db.remove(username)
+
+        print(<span class="hljs-string">'user deletion successful; "'</span> + username + <span class="hljs-string">'" no longer exists'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminUserRekeyAction</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Changes a blenderfarm user&#39;s key.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'rekey'</span>
+        self.description = <span class="hljs-string">'deletes the old user key and creates a new one'</span>
+        self.options = [<span class="hljs-string">'username'</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Invokes the <code>user rekey</code> action.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        username = options[<span class="hljs-string">'username'</span>]
+
+        users_db = blenderfarm.db.Users()
+
+        user = users_db.get_user(username)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> user:
+            print(<span class="hljs-string">'! that username does not exist'</span>)
+            <span class="hljs-keyword">return</span>
+
+        users_db.rekey(username)
+
+        print(<span class="hljs-string">'user rekey successful'</span>)
+        print(user.get_username_key())
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminUserListAction</span><span class="hljs-params">(Action)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>List all blenderfarm users.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'list'</span>
+        self.description = <span class="hljs-string">'lists users and keys'</span>
+        self.options = [<span class="hljs-string">'?username'</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">help</span><span class="hljs-params">(self, options)</span>:</span>
+        print(self.get_help_usage())
+        print()
+        print(<span class="hljs-string">'lists existing users on this blenderfarm server'</span>)
+        print(<span class="hljs-string">'if the optional parameter [username] is present, only lists that user'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invoke</span><span class="hljs-params">(self, options)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Invokes the <code>user list</code> action.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        users_db = blenderfarm.db.Users()
+
+        username = options[<span class="hljs-string">'username'</span>]
+
+        <span class="hljs-keyword">if</span> username:
+            user = users_db.get_user(username)
+
+            <span class="hljs-keyword">if</span> user:
+                print(<span class="hljs-string">'...'</span>)
+                print(user.get_username_key())
+                print(<span class="hljs-string">'...'</span>)
+                <span class="hljs-keyword">return</span>
+
+            print(<span class="hljs-string">'! that username does not exist'</span>)
+            <span class="hljs-keyword">return</span>
+
+        <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users_db.get_users():
+            print(user.get_username_key())
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminUserAction</span><span class="hljs-params">(ActionList)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>ActionList</code> for user actions.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'user'</span>
+        self.description = <span class="hljs-string">'blenderfarm server user administration commands'</span>
+
+        self.actions = [
+            AdminUserAddAction(),
+            AdminUserRemoveAction(),
+            AdminUserRekeyAction(),
+            AdminUserListAction()
+        ]
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminAction</span><span class="hljs-params">(ActionList)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p><code>ActionList</code> for admin actions.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
+        super().__init__()
+        self.name = <span class="hljs-string">'admin'</span>
+        self.description = <span class="hljs-string">'blenderfarm server administration commands'</span>
+
+        self.actions = [
+            AdminUserAction()
+        ]</code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>First, we define a list of actions.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>ACTIONS = [
+    HelpAction(),
+    VersionAction(),
+
+    ServerAction(),
+    AdminUserAction(),
+    AdminAction()
+]
+
+ACTIONS.sort()
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_version</span><span class="hljs-params">()</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out the blenderfarm version in a human-readable format.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    print(<span class="hljs-string">'blenderfarm version '</span> + blenderfarm.__version__)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_help</span><span class="hljs-params">()</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out a list of actions, their options, and their descriptions in a human-readable format.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    print(<span class="hljs-string">'actions:'</span>)
+
+    print()
+
+    <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> ACTIONS:
+        action.prefix = sys.argv[<span class="hljs-number">0</span>]
+        print(action.get_help_line())
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_usage</span><span class="hljs-params">()</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Prints out usage and help in a human-readable format.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    print(<span class="hljs-string">'usage: '</span> + sys.argv[<span class="hljs-number">0</span>] + <span class="hljs-string">' &lt;action&gt; [options...]'</span>)
+
+    print()
+
+    print_help()
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action</span><span class="hljs-params">(name)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Attempts to find the requisite action named <code>name</code>.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    name = name.lower().strip()
+
+    <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> ACTIONS:
+        <span class="hljs-keyword">if</span> action.name == name:
+            <span class="hljs-keyword">return</span> action
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Ideally, this would never be imported as a library, but just in case...</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+
+    run()
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>The fun part.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>    <span class="hljs-keyword">if</span> len(sys.argv) &lt; <span class="hljs-number">2</span>:
+        print_usage()
+        exit(<span class="hljs-number">1</span>)
+
+    action_name = sys.argv[<span class="hljs-number">1</span>]
+    action = get_action(action_name)
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> action:
+        print_usage()
+        print()
+        print(<span class="hljs-string">'! no such action "'</span> + action_name + <span class="hljs-string">'"'</span>)
+        exit(<span class="hljs-number">1</span>)
+
+    action.prefix = sys.argv[<span class="hljs-number">0</span>]
+
+    action.invoke(action.parse_arguments(sys.argv[<span class="hljs-number">2</span>:]))</code></pre>
+  </div>
+
+  
+</section>
+
+      
+      
+      <section class="section footer" id="footer">
+        
+        <aside class="comment">
+          <span class="content project-copyright">&copy; Copyright 2017 ZLSA Design.</span>
+        </aside>
+
+        <div class="code">
+          <span class="content page-generation-time">Generated Fri, 28 Apr 2017 19:33:50 GMT</span>
+        </div>
+        
+      </section>
+      
+    </main>
+
+  </body>
+</html>
+

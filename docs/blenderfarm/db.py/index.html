@@ -48,12 +48,12 @@
   
 <li class="file">
   
-<a href="../../client.py" title="client.py">
+<a href="../../bf.py" title="bf.py">
     
 <span class="language" style="background-color: #3572A5">py</span>
 
 
-<span class="filename">client.py</span>
+<span class="filename">bf.py</span>
 
 </a>
 
@@ -61,12 +61,12 @@
   
 <li class="file">
   
-<a href="../../server.py" title="server.py">
+<a href="../../client.py" title="client.py">
     
 <span class="language" style="background-color: #3572A5">py</span>
 
 
-<span class="filename">server.py</span>
+<span class="filename">client.py</span>
 
 </a>
 
@@ -442,7 +442,7 @@
 
   <div class="code">
     <pre><code>        <span class="hljs-keyword">pass</span>
-    
+
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>:</span></code></pre>
   </div>
@@ -498,6 +498,22 @@
     <pre><code>        self.username = data[<span class="hljs-string">'username'</span>]
         self.key = data[<span class="hljs-string">'key'</span>]
 
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_username_key</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns a human-readable username/key string.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.username.ljust(<span class="hljs-number">24</span>) + <span class="hljs-string">' '</span> + self.key
+
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Users</span><span class="hljs-params">(DB)</span>:</span></code></pre>
   </div>
@@ -515,7 +531,7 @@
   <div class="code">
     <pre><code>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self)</span>:</span>
         super().__init__(<span class="hljs-string">'users.json'</span>)
-        
+
         self.users = []</code></pre>
   </div>
 
@@ -524,16 +540,14 @@
 <section class="section">
 
   <aside class="comment">
-    <div class="text markdown"><p>If we don&#39;t have any saved data, add an admin user.</p>
+    <div class="text markdown"><p>If we don&#39;t have any saved data, save the DB.</p>
 </div>
   </aside>
   
 
   <div class="code">
     <pre><code>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.restore():
-            user = self.add(<span class="hljs-string">'admin'</span>)
-            
-            print(<span class="hljs-string">'Adding first user: "'</span> + user.username+ <span class="hljs-string">'"; key '</span> + user.key)</code></pre>
+            self.save()</code></pre>
   </div>
 
   
@@ -563,6 +577,22 @@
 
             self.users.append(user)
 
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_users</span><span class="hljs-params">(self)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Returns a list of every user stored in this database.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        <span class="hljs-keyword">return</span> self.users
+
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user</span><span class="hljs-params">(self, username)</span>:</span></code></pre>
   </div>
 
@@ -579,12 +609,30 @@ exists.</p>
 
   <div class="code">
     <pre><code>        self.refresh()
-        
+
         <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> self.users:
             <span class="hljs-keyword">if</span> user.username == username:
                 <span class="hljs-keyword">return</span> user
 
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_key</span><span class="hljs-params">()</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Generates a new key.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
+        <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>.join(random.SystemRandom().choice(key_characters) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(<span class="hljs-number">16</span>))
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span><span class="hljs-params">(self, username)</span>:</span></code></pre>
   </div>
@@ -605,16 +653,67 @@ key. Returns the newly created <code>User</code> or <code>None</code> if no user
             print(<span class="hljs-string">'attempted to add duplicate user "'</span> + username + <span class="hljs-string">'"'</span>)
             <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
 
-        key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
-        key = <span class="hljs-string">''</span>.join(random.SystemRandom().choice(key_characters) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(<span class="hljs-number">16</span>))
-
-        user = User(username, key)
+        user = User(username, Users.generate_key())
 
         self.users.append(user)
 
         self.save()
-        
-        <span class="hljs-keyword">return</span> user</code></pre>
+
+        <span class="hljs-keyword">return</span> user
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">remove</span><span class="hljs-params">(self, username)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Removes a user. Returns <code>False</code> if the user did not exist, <code>True</code> otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        user = self.get_user(username)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> user:
+            print(<span class="hljs-string">'attempted to remove user "'</span> + username + <span class="hljs-string">'" who does not exist'</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+        self.users.remove(user)
+
+        self.save()
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rekey</span><span class="hljs-params">(self, username)</span>:</span></code></pre>
+  </div>
+
+  
+</section>
+<section class="section">
+
+  <aside class="comment">
+    <div class="text markdown"><p>Creates a new key for user <code>username</code>, discarding the old key
+permanently. Returns <code>True</code> if user now has a new key, <code>False</code>
+otherwise.</p>
+</div>
+  </aside>
+  
+
+  <div class="code">
+    <pre><code>        user = self.get_user(username)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> user:
+            print(<span class="hljs-string">'attempted to rekey user "'</span> + username + <span class="hljs-string">'" who does not exist'</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">False</span>
+
+        user.key = Users.generate_key()
+
+        self.save()
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">True</span></code></pre>
   </div>
 
   
@@ -629,7 +728,7 @@ key. Returns the newly created <code>User</code> or <code>None</code> if no user
         </aside>
 
         <div class="code">
-          <span class="content page-generation-time">Generated Wed, 26 Apr 2017 20:01:26 GMT</span>
+          <span class="content page-generation-time">Generated Fri, 28 Apr 2017 19:33:50 GMT</span>
         </div>
         
       </section>
