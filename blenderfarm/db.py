@@ -15,7 +15,7 @@ class DB:
 
     def save(self):
         """Saves the db to disk."""
-        
+
         with open(self.filename, 'w') as dbfile:
             json.dump(self._save(), dbfile)
 
@@ -33,7 +33,7 @@ class DB:
 
     def refresh(self):
         """Attempts to re-read the database on disk in case of changes."""
-        
+
         self.restore()
 
     # pylint: disable=no-self-use
@@ -44,7 +44,7 @@ class DB:
     def _restore(self, data):
         """Populates the data with the Python object returned by `_save`."""
         pass
-    
+
 
 class User:
     """Single user. Basically stores data for `Users`."""
@@ -55,7 +55,7 @@ class User:
 
     def save(self):
         """Dumps to a Python object."""
-        
+
         return {
             'username': self.username,
             'key': self.key
@@ -63,9 +63,13 @@ class User:
 
     def restore(self, data):
         """Restores from a Python object."""
-        
+
         self.username = data['username']
         self.key = data['key']
+
+    def get_username_key(self):
+        """Returns a human-readable username/key string."""
+        return self.username.ljust(24) + ' ' + self.key
 
 
 class Users(DB):
@@ -73,14 +77,12 @@ class Users(DB):
 
     def __init__(self):
         super().__init__('users.json')
-        
+
         self.users = []
 
-        # If we don't have any saved data, add an admin user.
+        # If we don't have any saved data, save the DB.
         if not self.restore():
-            user = self.add('admin')
-            
-            print('Adding first user: "' + user.username+ '"; key ' + user.key)
+            self.save()
 
     # # Save/restore
 
@@ -101,17 +103,28 @@ class Users(DB):
 
             self.users.append(user)
 
+    def get_users(self):
+        """Returns a list of every user stored in this database."""
+        return self.users
+
     def get_user(self, username):
         """Returns the appropriate `User`, or `None` if no such user
 exists."""
 
         self.refresh()
-        
+
         for user in self.users:
             if user.username == username:
                 return user
 
         return None
+
+    @staticmethod
+    def generate_key():
+        """Generates a new key."""
+
+        key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
+        return ''.join(random.SystemRandom().choice(key_characters) for _ in range(16))
 
     def add(self, username):
         """Creates a user with username `username` and generates a random
@@ -121,13 +134,42 @@ key. Returns the newly created `User` or `None` if no user was created."""
             print('attempted to add duplicate user "' + username + '"')
             return None
 
-        key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
-        key = ''.join(random.SystemRandom().choice(key_characters) for _ in range(16))
-
-        user = User(username, key)
+        user = User(username, Users.generate_key())
 
         self.users.append(user)
 
         self.save()
-        
+
         return user
+
+    def remove(self, username):
+        """Removes a user. Returns `False` if the user did not exist, `True` otherwise."""
+
+        user = self.get_user(username)
+
+        if not user:
+            print('attempted to remove user "' + username + '" who does not exist')
+            return False
+
+        self.users.remove(user)
+
+        self.save()
+
+        return True
+
+    def rekey(self, username):
+        """Creates a new key for user `username`, discarding the old key
+permanently. Returns `True` if user now has a new key, `False`
+otherwise."""
+
+        user = self.get_user(username)
+
+        if not user:
+            print('attempted to rekey user "' + username + '" who does not exist')
+            return False
+
+        user.key = Users.generate_key()
+
+        self.save()
+
+        return True
