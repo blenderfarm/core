@@ -151,6 +151,9 @@ class ActionList(Action):
     def get_action(self, name):
         """Attempts to find the requisite sub-action named `name`."""
 
+        if not name:
+            return None
+
         name = name.lower().strip()
 
         for action in self.actions:
@@ -188,6 +191,12 @@ class ActionList(Action):
         # Get action name and arguments (will be an empty array if none are present.)
         action_name = options['action']
         arguments = options['__']
+
+        if not action_name:
+            self.help(options)
+            print()
+            print('! expected a sub-action')
+            return
 
         action = self.get_action(action_name)
 
@@ -429,6 +438,7 @@ class AdminUserAction(ActionList):
             AdminUserListAction()
         ]
 
+        
 class AdminAction(ActionList):
     """`ActionList` for admin actions."""
 
@@ -441,6 +451,79 @@ class AdminAction(ActionList):
             AdminUserAction()
         ]
 
+
+class JobAddAction(Action):
+    """Add a new job."""
+
+    def __init__(self):
+        super().__init__()
+        self.name = 'add'
+        self.description = 'Adds a new job.'
+        self.options = ['url', '?start=0', '?end=1']
+
+    def help(self, options):
+        print(self.get_help_usage())
+        print()
+        print('lists existing users on this blenderfarm server')
+        print('if the optional parameter [username] is present, only lists that user')
+
+    def invoke(self, options):
+        """Invokes the `job add` action."""
+
+        start, end = int(options['start']), int(options['end'])
+
+        jobs_db = blenderfarm.job.JobList()
+
+        job_info = blenderfarm.job.JobInfoRender(None)
+        
+        job_info.file_url = options['url']
+        job_info.frame_range = [start, end]
+        
+        job = blenderfarm.job.Job(job_info)
+        
+        jobs_db.add(job)
+
+        print(job.get_job_line())
+
+        jobs_db.save()
+
+
+class JobListAction(Action):
+    """Add a new job."""
+
+    def __init__(self):
+        super().__init__()
+        self.name = 'list'
+        self.description = 'list all jobs.'
+        self.options = ['?job_id']
+
+    def help(self, options):
+        print(self.get_help_usage())
+
+    def invoke(self, options):
+        """Invokes the `job list` action."""
+
+        jobs_db = blenderfarm.job.JobList()
+        
+        for job in jobs_db.get_jobs():
+            print(job.get_job_line())
+        else:
+            print('no jobs')
+
+            
+class JobAction(ActionList):
+    """`ActionList` for job actions."""
+
+    def __init__(self):
+        super().__init__()
+        self.name = 'job'
+        self.description = 'job creation, editing, and removal commands'
+
+        self.actions = [
+            JobAddAction(),
+            JobListAction()
+        ]
+
 # First, we define a list of actions.
 
 ACTIONS = [
@@ -449,7 +532,8 @@ ACTIONS = [
 
     ServerAction(),
     AdminUserAction(),
-    AdminAction()
+    AdminAction(),
+    JobAction()
 ]
 
 ACTIONS.sort()

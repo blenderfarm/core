@@ -36,7 +36,7 @@ error handler if no route exists."""
             path = method
             method = 'GET'
 
-        path = urllib.parse.urlparse(path).path
+        path = '/' + urllib.parse.urlparse(path).path
         
         if method in self.routes:
             if path in self.routes[method]:

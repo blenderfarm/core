@@ -83,49 +83,14 @@ Returns server info:
 
 This endpoint does _not_ require authentication.
 
-### POST `session/verify.json`
+### POST `auth/test.json`
 
-Requests the creation of a new session token. The username and key
-must be sent as `POST` parameters named `user` and `key`,
-respectively.
+Simply an endpoint that requires authentication, to verify the
+user/key combination.
 
 ```json
 {
   "status": "ok",
-  "token": "abcdefghijklmnopqrstuvwxyz0123456789",
-  "expires-in": 86400
 }
 
 ```
-
-* `token` is the token, unique to this particular session.
-* `expires-in` is the number of seconds in which the token will become
-  invalid. The client must request a new token before this many
-  seconds have passed, or any further requests requiring
-  authentication will fail.
-
-This endpoint does _not_ require authentication.
-
-#### Errors
-
-* `no-user` if there's no such `user` (`context` will be the relevant username)
-* `bad-key` if there's no such `key` for the `user` (`context` will be the relevant username)
-
-### POST `session/end.json`
-
-Requests the destruction of a session token. The session token to be
-ended must be sent as a `POST` parameter named `token`. Upon success,
-any further transactions using that particular session token will
-fail.
-
-```json
-{
-  "status": "ok"
-}
-
-```
-
-#### Errors
-
-* `bad-token` if there's no such `token`
-

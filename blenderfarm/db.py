@@ -5,6 +5,20 @@ import json
 import random
 import string
 
+def generate_key():
+    """Generates a 16-character random key."""
+
+    key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
+    return ''.join(random.SystemRandom().choice(key_characters) for _ in range(16))
+
+def generate_uuid():
+    """Generates a 32-character random UUID."""
+
+    key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
+    return ''.join(random.SystemRandom().choice(key_characters) for _ in range(32))
+
+# # Abstract DB class
+    
 class DB:
     """Generic database abstract class."""
 
@@ -71,6 +85,8 @@ class User:
         """Returns a human-readable username/key string."""
         return self.username.ljust(24) + ' ' + self.key
 
+    
+# # Users
 
 class Users(DB):
     """Users database."""
@@ -119,22 +135,17 @@ exists."""
 
         return None
 
-    @staticmethod
-    def generate_key():
-        """Generates a new key."""
-
-        key_characters = string.ascii_uppercase + string.ascii_lowercase + string.digits
-        return ''.join(random.SystemRandom().choice(key_characters) for _ in range(16))
-
     def add(self, username):
         """Creates a user with username `username` and generates a random
 key. Returns the newly created `User` or `None` if no user was created."""
+
+        self.refresh()
 
         if self.get_user(username):
             print('attempted to add duplicate user "' + username + '"')
             return None
 
-        user = User(username, Users.generate_key())
+        user = User(username, generate_key())
 
         self.users.append(user)
 
@@ -144,6 +155,8 @@ key. Returns the newly created `User` or `None` if no user was created."""
 
     def remove(self, username):
         """Removes a user. Returns `False` if the user did not exist, `True` otherwise."""
+
+        self.refresh()
 
         user = self.get_user(username)
 
@@ -162,14 +175,17 @@ key. Returns the newly created `User` or `None` if no user was created."""
 permanently. Returns `True` if user now has a new key, `False`
 otherwise."""
 
+        self.refresh()
+
         user = self.get_user(username)
 
         if not user:
             print('attempted to rekey user "' + username + '" who does not exist')
             return False
 
-        user.key = Users.generate_key()
+        user.key = generate_key()
 
         self.save()
 
         return True
+

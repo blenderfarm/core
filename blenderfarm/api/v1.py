@@ -6,12 +6,14 @@ import time
 
 import requests
 
-from .. import version
-from . import api
-from .. import error
-from .. import digest
+from .. import version as bf_version
+from . import api as bf_api
+from .. import error as bf_error
+from .. import digest as bf_digest
+from .. import task as bf_task
+from .. import job as bf_job
 
-class Server(api.APIServer):
+class Server(bf_api.APIServer):
 
     """Same name as `api.API`, but this is the v1 API implementation."""
 
@@ -24,9 +26,13 @@ class Server(api.APIServer):
         """Initialize routes."""
 
         self.route('__', 'error_404', self.route_error_404)
-        self.route('GET', 'info.json', self.route_info)
+        self.route('GET', '/info.json', self.route_info)
         
-        self.route('GET', 'auth/test.json', self.route_auth_test)
+        self.route('GET', '/auth/test.json', self.route_auth_test)
+        
+        self.route('GET', '/job/get.json', self.route_job_get)
+        
+        self.route('GET', '/task/next.json', self.route_task_next)
 
     @staticmethod
     def route_error_404(request, response):
@@ -88,11 +94,11 @@ class Server(api.APIServer):
         data_digest = data['digest']
         del data['digest']
 
-        calculated_digest = digest.get_key_value_digest(data, user.key)
+        calculated_digest = bf_digest.get_key_value_digest(data, user.key)
 
         # Make sure the token matches.
         
-        if not digest.compare(data_digest, calculated_digest):
+        if not bf_digest.compare(data_digest, calculated_digest):
             response.respond_json({
                 'status': 'error',
                 'code': 'invalid-key',
@@ -111,7 +117,7 @@ class Server(api.APIServer):
 
         response.respond_json({
             'status': 'ok',
-            'version': version.__version__,
+            'version': bf_version.__version__,
             'uptime': self.server.get_uptime(),
             'time': time.time()
         })
@@ -126,8 +132,67 @@ class Server(api.APIServer):
             'status': 'ok'
         })
 
+    def route_job_get(self, request, response):
+        """Returns serialized info about a single `Job`."""
 
-class Client(api.APIClient):
+        if not self.verify_auth(request, response):
+            return
+
+        data = self.get_url_params(request, response)
+
+        if not data:
+            self.route_error_400(request, response)
+            
+            return False
+
+        if 'job_id' not in data:
+            print('missing URL parameter "job_id"')
+            self.route_error_400(request, response, context='missing parameters')
+            
+            return False
+
+        job_id = data['job_id']
+        
+        job = self.server.jobs.get_job(job_id)
+
+        if not job:
+            response.respond_json({
+                'status': 'error',
+                'code': 'invalid-job',
+                'message': 'No such job',
+                'context': job_id
+            })
+            return
+        
+        response.respond_json({
+            'status': 'ok',
+            'job': job.serialize(net=True)
+        })
+
+    def route_task_next(self, request, response):
+        """Next task route."""
+
+        if not self.verify_auth(request, response):
+            return
+
+        job = self.server.jobs.get_next_job()
+
+        if not job:
+            response.respond_json({
+                'status': 'ok',
+                'task': None
+            })
+            return
+
+        task = job.get_next_task()
+        
+        response.respond_json({
+            'status': 'ok',
+            'task': task.serialize()
+        })
+
+
+class Client(bf_api.APIClient):
 
     """v1 API client (must talk with the v1 server, above)"""
 
@@ -142,6 +207,9 @@ class Client(api.APIClient):
 
         self.user = None
         self.key = None
+
+        self.jobs = {}
+        self.task = []
 
         self.connection_start_time = 0
 
@@ -175,7 +243,7 @@ disconnecting."""
             print('Could not decode JSON:')
             print(json_string)
 
-            raise error.Error('invalid-json', 'Invalid or malformed JSON could not be decoded')
+            raise bf_error.Error('invalid-json', 'Invalid or malformed JSON could not be decoded')
 
         return json_data
 
@@ -201,43 +269,53 @@ Python object."""
 
         json_data = self.parse_json(response.text)
 
-        print('Response: ' + response.text)
-
         if not isinstance(json_data, dict) or response.status_code != 200:
-            raise error.Error('http-error', 'Server returned an error status', context=str(response.status_code))
+            raise bf_error.Error('http-error', 'Server returned an error status', context=str(response.status_code))
         
         if json_data['status'] == 'ok' or not raise_errors:
             return json_data
 
         if not all(k in json_data for k in ('code', 'message')):
-            raise error.Error('invalid-json', 'Invalid or malformed JSON could not be decoded')
+            raise bf_error.Error('invalid-json', 'Invalid or malformed JSON could not be decoded')
 
         context = path
 
         if 'context' in json_data:
             context = json_data['context']
             
-        raise error.Error(json_data['code'], json_data['message'], context)
+        raise bf_error.Error(json_data['code'], json_data['message'], context)
 
     # ## Low-level communications
 
-    def request_get(self, path, params=None, raise_errors=False):
+    def request_get(self, path, params=None, raise_errors=False, auth=False):
         """Submits a `GET` request to the server. The path must *not* start with a leading '/'."""
+
+        if not params:
+            params = {}
+
+        if auth:
+            params = self.add_auth(params)
 
         try:
             response = self.session.get(self.build_url(path), params=params)
         except requests.exceptions.ConnectionError as _:
-            raise error.Error('network-error', 'Could not connect to the server', self.get_host_port())
+            raise bf_error.Error('network-error', 'Could not connect to the server', self.get_host_port())
 
         return self.handle_response(path, response, raise_errors)
 
-    def request_post(self, path, params=None, data=None, raise_errors=False):
+    def request_post(self, path, params=None, data=None, raise_errors=False, auth=False):
         """Submits a `POST` request to the server. The path must *not* start with a leading '/'."""
+
+        if not params:
+            params = {}
+
+        if auth:
+            params = self.add_auth(params)
 
         try:
             response = self.session.post(self.build_url(path), params=params, data=data)
         except requests.exceptions.ConnectionError as _:
-            raise error.Error('network-error', 'Could not connect to the server', self.get_host_port())
+            raise bf_error.Error('network-error', 'Could not connect to the server', self.get_host_port())
 
         return self.handle_response(path, response, raise_errors)
 
@@ -245,9 +323,9 @@ Python object."""
         """Injects the HMAC digest into URL parameter data."""
         
         data['user'] = self.user
-        data['time'] = self.user
+        data['time'] = str(0)
 
-        data['digest'] = digest.get_key_value_digest(data, self.key)
+        data['digest'] = bf_digest.get_key_value_digest(data, self.key)
 
         return data
 
@@ -265,9 +343,55 @@ Python object."""
     def request_auth_test(self):
         """Makes sure the user/key pair is valid."""
         
-        response = self.request_get('/auth/test.json', params=self.add_auth({}), raise_errors=True)
+        response = self.request_get('/auth/test.json', auth=True, raise_errors=True)
 
-        print(json.dumps(response))
+        # If any errors happened above, they would have raised an exception, so we're good here.
+
+    def request_next_task(self):
+        """Requests the next task task from the server."""
+        
+        response = self.request_get('/task/next.json', auth=True, raise_errors=True)
+
+        if not response['task']:
+            return None
+
+        next_task = bf_task.Task(None).unserialize(response['task'])
+
+        job_id = next_task.job_id
+
+        if job_id not in self.jobs:
+            job = self.request_job(job_id)
+
+            self.jobs[job_id] = job
+
+        return bf_task.Task(self.jobs[job_id]).unserialize(response['task'])
+        
+    def download_job_file(self, job, filename):
+        """Submits a `GET` request to the server. The path must *not* start with a leading '/'."""
+
+        url = job.job_info.file_url
+
+        try:
+            with open(filename, 'wb') as handle:
+                
+                response = self.session.get(url, stream=True)
+
+                if not response.ok:
+                    raise bf_error.Error('network-error', 'Could not download file for job', url)
+
+                for block in response.iter_content(1024):
+                    handle.write(block)
+        except requests.exceptions.ConnectionError as _:
+            raise bf_error.Error('network-error', 'Could not download file for job', url)
+
+        return filename
+        
+    def request_job(self, job_id):
+        """Gets the job information for `job_id`."""
+
+        response = self.request_get('/job/get.json', params={'job_id': job_id}, auth=True, raise_errors=True)
+
+        return bf_job.Job(None).unserialize(response['job'])
 
     # ## High-level connect/disconnect
 
@@ -280,7 +404,7 @@ Python object."""
         try:
             self.request_server_info()
             self.request_auth_test()
-        except error.Error as exception:
+        except bf_error.Error as exception:
             self.clear_local_state()
             
             raise exception # pylint: disable=raising-bad-type

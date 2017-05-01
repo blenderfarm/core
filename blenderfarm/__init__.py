@@ -8,4 +8,4 @@ from . import client
 from . import error
 from . import db
 
-from .version import __version__
+from .version import __version__, __version_info__

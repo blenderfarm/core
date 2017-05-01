@@ -10,6 +10,7 @@ from socketserver import ThreadingMixIn
 
 from . import api
 from . import db
+from . import job
 
 class BlenderfarmHTTPServerRequestHandler(BaseHTTPRequestHandler):
 
@@ -147,6 +148,7 @@ class Server:
         self.init_api_handlers()
         self.init_server()
 
+        self.jobs = job.JobList()
         self.users = db.Users()
 
         self.start_time = time.monotonic()

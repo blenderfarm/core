@@ -96,7 +96,12 @@ if `host` and `port` have been set, `False` otherwise."""
 
         pass
 
-    def request_new_task(self):
+    def request_next_task(self):
         """Requests the next task from the server, and if it exists, performs it."""
 
-        pass
+        return self.api.request_next_task()
+    
+    def download_job_file(self, job, filename):
+        """Downloads the job work file from whatever server it's hosted at."""
+
+        return self.api.download_job_file(job, filename)
