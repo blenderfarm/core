@@ -481,6 +481,8 @@ class JobAddAction(Action):
         
         job = blenderfarm.job.Job(job_info)
         
+        job.populate_tasks()
+        
         jobs_db.add(job)
 
         print(job.get_job_line())

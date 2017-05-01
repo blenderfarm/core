@@ -30,9 +30,9 @@ class Server(bf_api.APIServer):
         
         self.route('GET', '/auth/test.json', self.route_auth_test)
         
-        self.route('GET', '/job/get.json', self.route_job_get)
-        
         self.route('GET', '/task/next.json', self.route_task_next)
+        
+        self.route('POST', '/task/result.json', self.route_task_result)
 
     @staticmethod
     def route_error_404(request, response):
@@ -122,6 +122,7 @@ class Server(bf_api.APIServer):
             'time': time.time()
         })
 
+        
     def route_auth_test(self, request, response):
         """Authentication test route."""
 
@@ -132,43 +133,7 @@ class Server(bf_api.APIServer):
             'status': 'ok'
         })
 
-    def route_job_get(self, request, response):
-        """Returns serialized info about a single `Job`."""
-
-        if not self.verify_auth(request, response):
-            return
-
-        data = self.get_url_params(request, response)
-
-        if not data:
-            self.route_error_400(request, response)
-            
-            return False
-
-        if 'job_id' not in data:
-            print('missing URL parameter "job_id"')
-            self.route_error_400(request, response, context='missing parameters')
-            
-            return False
-
-        job_id = data['job_id']
         
-        job = self.server.jobs.get_job(job_id)
-
-        if not job:
-            response.respond_json({
-                'status': 'error',
-                'code': 'invalid-job',
-                'message': 'No such job',
-                'context': job_id
-            })
-            return
-        
-        response.respond_json({
-            'status': 'ok',
-            'job': job.serialize(net=True)
-        })
-
     def route_task_next(self, request, response):
         """Next task route."""
 
@@ -185,10 +150,76 @@ class Server(bf_api.APIServer):
             return
 
         task = job.get_next_task()
+
+        if not task:
+            response.respond_json({
+                'status': 'ok',
+                'task': None
+            })
+            return
         
+        task.in_progress = True
+
         response.respond_json({
             'status': 'ok',
+            'job': task.job.serialize(),
             'task': task.serialize()
+        })
+
+    def route_task_result(self, request, response):
+        """Task render result route."""
+
+        if not self.verify_auth(request, response):
+            return
+
+        data = self.get_url_params(request, response)
+
+        if not data:
+            self.route_error_400(request, response)
+            
+            return False
+        
+        if not all(k in data for k in ('job_id', 'task_id', 'elapsed')):
+            self.route_error_400(request, response, context='missing parameters')
+            
+            return False
+
+        job = self.server.jobs.get_job(data['job_id'])
+
+        if not job:
+            response.respond_json({
+                'status': 'error',
+                'code': 'invalid-job',
+                'message': 'No such job',
+                'context': data['job_id']
+            })
+            return
+
+        task = job.get_task(data['task_id'])
+        
+        if not task:
+            response.respond_json({
+                'status': 'error',
+                'code': 'invalid-task',
+                'message': 'No such task for job "' + data['job_id'] + '"',
+                'context': data['task_id']
+            })
+            return
+
+        task.in_progress = False
+        task.complete = True
+
+        length = request.headers['content-length']
+        data = request.rfile.read(int(length))
+
+        print('saving result!')
+
+        task.write_result(data)
+
+        self.server.jobs.save()
+
+        response.respond_json({
+            'status': 'ok'
         })
 
 
@@ -352,19 +383,14 @@ Python object."""
         
         response = self.request_get('/task/next.json', auth=True, raise_errors=True)
 
-        if not response['task']:
+        if not response['task'] or not response['job']:
             return None
 
-        next_task = bf_task.Task(None).unserialize(response['task'])
+        job = bf_job.Job(None).unserialize(response['job'])
 
-        job_id = next_task.job_id
+        next_task = bf_task.Task(job).unserialize(response['task'])
 
-        if job_id not in self.jobs:
-            job = self.request_job(job_id)
-
-            self.jobs[job_id] = job
-
-        return bf_task.Task(self.jobs[job_id]).unserialize(response['task'])
+        return next_task
         
     def download_job_file(self, job, filename):
         """Submits a `GET` request to the server. The path must *not* start with a leading '/'."""
@@ -386,13 +412,24 @@ Python object."""
 
         return filename
         
-    def request_job(self, job_id):
-        """Gets the job information for `job_id`."""
+    def upload_render_result(self, task, filename, elapsed=0):
+        """Submits a `POST` request to the server including the rendered file `filename`."""
 
-        response = self.request_get('/job/get.json', params={'job_id': job_id}, auth=True, raise_errors=True)
+        params = {
+            'task_id': task.task_id,
+            'job_id': task.job.job_id,
+            'elapsed': str(elapsed)
+        }
 
-        return bf_job.Job(None).unserialize(response['job'])
+        try:
+            with open(filename, 'rb') as handle:
+                response = self.request_post('/task/result.json', params=params, data=handle, auth=True)
 
+        except requests.exceptions.ConnectionError as _:
+            raise bf_error.Error('network-error', 'Could not upload file for job', url)
+
+        return filename
+        
     # ## High-level connect/disconnect
 
     def connect(self, user, key):

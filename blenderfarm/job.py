@@ -15,6 +15,12 @@ class JobInfo(serializable.Serializable):
     def get_info_type(self):
         return 'none'
 
+    def unserialize(self, data):
+        return self
+
+    def serialize(self):
+        return {}
+    
     
 class JobInfoRender(JobInfo):
 
@@ -25,6 +31,8 @@ class JobInfoRender(JobInfo):
 
         self.file_url = ''
 
+        self.resolution = [1920, 1080]
+
         # Renders frames from `[0]` to `[1]-1`.
         self.frame_range = [0, 1]
 
@@ -34,14 +42,34 @@ class JobInfoRender(JobInfo):
     def unserialize(self, data):
         super().unserialize(data)
 
+        self.file_url = data['file_url']
         self.frame_range = data['frame_range']
+        self.resolution = data['resolution']
 
         return self
 
+    def get_tasks(self):
+
+        tasks = []
+
+        for frame in range(self.frame_range[0], self.frame_range[1]):
+            frame_task = task.Task(self.job)
+            
+            task_info = task.TaskInfoRender(frame_task)
+            task_info.frame = frame
+
+            frame_task.task_info = task_info
+            
+            tasks.append(frame_task)
+
+        return tasks
+            
     def serialize(self):
         out = super().serialize()
 
+        out['file_url'] = self.file_url
         out['frame_range'] = self.frame_range
+        out['resolution'] = self.resolution
 
         return out
 
@@ -77,18 +105,30 @@ class Job(serializable.Serializable):
 
         self.job_info = job_info
 
-        if job_info:
-            self.job_info.job = self
-        
         # Contains a list of `Task`s.
         self.tasks = []
 
         # Contains a list of `task_id`s.
         self.working_tasks = []
 
-    def unserialize(self, data):
-        super().unserialize(data)
+        if job_info:
+            self.job_info.job = self
+
+    def populate_tasks(self):
+        self.tasks = self.job_info.get_tasks()
         
+    def get_task(self, task_id):
+        """Returns the task with `task_id`, or `None` if no such task exists."""
+
+        print(self.tasks, task_id)
+        
+        for task in self.tasks:
+            if task.task_id == task_id:
+                return task
+
+        return None
+
+    def unserialize(self, data):
         self.job_id = data['job_id']
 
         job_info_type = data['job_info_type']
@@ -110,7 +150,7 @@ class Job(serializable.Serializable):
         return self
 
     def serialize(self, net=False):
-        out = super().serialize()
+        out = {}
 
         out['job_id'] = self.job_id
 
@@ -136,9 +176,10 @@ class Job(serializable.Serializable):
             return None
 
         for task in self.tasks:
+            if task.should_execute():
+                return task
 
-        # Obviously, this is a temporary placeholder.
-        return self.tasks[0] # TODO duh.
+        return None
 
     
 # # JobsList

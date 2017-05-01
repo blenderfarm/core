@@ -90,7 +90,32 @@ user/key combination.
 
 ```json
 {
-  "status": "ok",
+  "status": "ok"
 }
 
 ```
+
+### GET `task/next.json`
+
+Returns the next task to be performed.
+
+```json
+{
+  "status": "ok",
+  "task": {
+    "task_id": "nrOn23gtBPlUGgRBXxnl6yCi5P7SIUx9",
+    "job": {
+      "job_id": "hzjtBPlUGgRBXxnrOn23gl6yCi5P7SWZ",
+      "file_url"
+    }
+    "task_info_type": "render",
+    "task_info": {
+      "resolution": [1920, 1080],
+      "frame": 0
+    }
+  }
+}
+
+```
+
+* `task` is a `Task` JSON object, or `null` if all tasks are complete (yay!)

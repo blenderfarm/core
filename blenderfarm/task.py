@@ -1,6 +1,8 @@
 
 """Task."""
 
+import os
+
 from . import db
 from . import serializable
 
@@ -14,6 +16,12 @@ class TaskInfo(serializable.Serializable):
     def get_info_type(self):
         return "none"
 
+    def unserialize(self, data):
+        return self
+
+    def serialize(self):
+        return {}
+    
     
 class TaskInfoRender(TaskInfo):
 
@@ -23,6 +31,7 @@ class TaskInfoRender(TaskInfo):
         super().__init__(task)
         
         self.resolution = [1920, 1080]
+        self.frame = 0
 
     def get_info_type(self):
         return "render"
@@ -31,6 +40,7 @@ class TaskInfoRender(TaskInfo):
         super().unserialize(data)
 
         self.resolution = data['resolution']
+        self.frame = data['frame']
 
         return self
 
@@ -38,9 +48,12 @@ class TaskInfoRender(TaskInfo):
         out = super().serialize()
 
         out['resolution'] = self.resolution
+        out['frame'] = self.frame
 
         return out
 
+    def get_result_filename(self):
+        return os.path.join('result', self.task.job.job_id, str(self.frame) + '.png')
     
 class Task(serializable.Serializable):
 
@@ -48,7 +61,7 @@ class Task(serializable.Serializable):
 
     # ## Statuses
 
-    def __init__(self, job):
+    def __init__(self, job, task_info=None):
         # While `job` is a required argument, it might be `None` sometimes.
         
         self.job = job
@@ -70,7 +83,9 @@ class Task(serializable.Serializable):
 
         self.complete = False
 
-        self.task_info = TaskInfoRender(self)
+        self.in_progress = False
+
+        self.task_info = task_info or None
 
         # A list of nodes that are currently processing this task.
         self.nodes_working = []
@@ -80,8 +95,16 @@ class Task(serializable.Serializable):
 render node. Returns `True` if it can be executed, `False`
 otherwise."""
 
+        if self.complete:
+            return False
+
+        if self.in_progress:
+            return False
+
         if self.ignore:
             return False
+
+        return True
 
     def unserialize(self, data):
         super().unserialize(data)
@@ -90,6 +113,7 @@ otherwise."""
 
         self.task_id = data['task_id']
         self.ignore = data['ignore']
+        self.complete = data['complete']
 
         task_info_type = data['task_info_type']
         
@@ -104,14 +128,31 @@ otherwise."""
         return self
 
     def serialize(self):
+        # We specifically do not save `in_progress` because the render
+        # node might have tried to upload the finished file while we
+        # were offline. Instead, we re-render any frames that were
+        # potentially in-progress when we were last shut down.
+        
         out = super().serialize()
 
         out['job_id'] = self.job.job_id
         
         out['task_id'] = self.task_id
         out['ignore'] = self.ignore
+        out['complete'] = self.complete
         
         out['task_info_type'] = self.task_info.get_info_type()
         out['task_info'] = self.task_info.serialize()
 
         return out
+
+    def write_result(self, data):
+        filename = self.task_info.get_result_filename()
+
+        print('filename: ' + filename)
+
+        if not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename))
+        
+        with open(filename, 'wb') as handle:
+            handle.write(data)

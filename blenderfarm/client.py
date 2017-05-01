@@ -1,6 +1,8 @@
 
 """Blenderfarm client."""
 
+import os
+
 from . import api
 
 # # `Client`
@@ -104,4 +106,10 @@ if `host` and `port` have been set, `False` otherwise."""
     def download_job_file(self, job, filename):
         """Downloads the job work file from whatever server it's hosted at."""
 
+        if os.path.isfile(filename):
+            return filename
+
         return self.api.download_job_file(job, filename)
+    
+    def upload_render_result(self, task, filename, elapsed=0):
+        return self.api.upload_render_result(task, filename, elapsed)

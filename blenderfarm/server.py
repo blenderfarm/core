@@ -130,7 +130,10 @@ element."""
 
 #from . import api_v1
 
-class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+#class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+#    """Handle requests in a separate thread."""
+
+class ThreadedHTTPServer(HTTPServer):
     """Handle requests in a separate thread."""
 
 class Server:
